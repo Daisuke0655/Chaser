@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './Login.css';
-
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate()
+
   const [formData,setFormData] = useState({
     name: '',
     password: '',
@@ -27,6 +29,7 @@ const Login = () => {
       console.log('receive data')
       setFormData({ name: '', password: ''})
       setErrors({})
+      navigate('/initial') 
     }else{
       setErrors(newErrors)
     }
@@ -58,7 +61,7 @@ const Login = () => {
           <label className='label'>パスワード:</label>
           {errors.password && <span className="error">{errors.password}</span>}
           <input 
-            type='text'
+            type='password'
             name='password'
             value={formData.password}
             onChange= {handleChange}

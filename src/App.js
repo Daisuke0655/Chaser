@@ -1,6 +1,7 @@
 import React from "react";
-import Login from "./components/Login/Login";
 import { BrowserRouter, Routes, Route} from "react-router-dom";
+import InitialPage from "./pages/InitiaPage/InitialPage";
+import Login from "./pages/Login/Login";
 
 
 const App = () =>{
@@ -9,6 +10,7 @@ const App = () =>{
             <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login />}></Route>
+                <Route path="/initial" element={<InitialPage />}></Route>
             </Routes>
             </BrowserRouter>
         </div>
