@@ -1,6 +1,6 @@
-import './initialPage.css';
+import './InitialPage.css';
 
-function initialPage() {
+function InitialPage() {
   return (
     <div className="initialPage">
       <h1>Welcome to CHaser</h1>
@@ -12,4 +12,4 @@ function initialPage() {
   );
 }
 
-export default initialPage
+export default InitialPage
