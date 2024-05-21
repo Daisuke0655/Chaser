@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
+import postUserData from '../../components/postUserData'
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -26,10 +27,16 @@ const Login = () => {
     }
   
     if(Object.keys(newErrors).length === 0){
-      console.log('receive data')
-      setFormData({ name: '', password: ''})
-      setErrors({})
-      navigate('/initial') 
+      if(postUserData(formData)){
+        navigate('/initial') 
+      }
+      else{
+        setFormData({ name: '', password: ''})
+        setErrors({})
+        newErrors.name = '名前またはパスワードが違います'
+        setErrors(newErrors)
+        console.log('error')
+      }
     }else{
       setErrors(newErrors)
     }
