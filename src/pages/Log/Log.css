@@ -1,0 +1,17 @@
+/* リストのデフォルトスタイルをリセット */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* リストアイテムのカスタムスタイル */
+  li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+  }
+  
+  li:hover {
+    background-color: #f0f0f0;
+  }

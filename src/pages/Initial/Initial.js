@@ -1,11 +1,15 @@
   import React, { useState, useRef } from "react";
   import './Initial.css';
+  import { useNavigate } from 'react-router-dom';
+  
 
   const initialState={
     file:null,
   }
 
   function Initial() {
+    const navigate = useNavigate()
+
     const inputRef = useRef(null);
     const [formState,setFormState] = useState(initialState)
 
@@ -38,10 +42,15 @@
       console.log("complete uploadFile")
     }
 
-    const onClickButton = () => {
+    const onClickFileButton = () => {
       console.log("onClickButton")
       console.log(inputRef.current)
       inputRef.current.click()
+    };
+
+    const onClickLogButton = () => {
+      console.log("nandedayo")
+      navigate('/log') 
     };
     
     return (
@@ -51,13 +60,13 @@
           <button className="button-style">対戦を始める</button>
         </div>
         <div className="button-box">
-          <button className="button-style">試合を観戦する</button>
+          <button className="button-style" onClick={onClickLogButton}>ログを見る</button>
         </div>
         <div className="button-box">
           <button className="button-style">トーナメントに参加</button>
         </div>
         <div className="button-box">
-          <button className="button-style" onClick={onClickButton}>ファイルをアップロード</button>
+          <button className="button-style" onClick={onClickFileButton}>ファイルをアップロード</button>
           <input 
             hidden
             ref={inputRef}
