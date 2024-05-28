@@ -33,7 +33,7 @@ const Log = () => {
     };
     return (
         <div >
-            <h1>DataLists</h1>
+            <h1>過去のログ</h1>
             <DataList items={tmpData} />
         </div>
     );
