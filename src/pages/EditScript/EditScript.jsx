@@ -1,89 +1,72 @@
 import React, { useState, useRef} from 'react';
 import postUserData from '../../components/postUserData'
 import { Editor } from '@monaco-editor/react';
-const Login = () => {
-  const [formData,setFormData] = useState({
-    name: '',
-    password: '',
-  })
+import { MdFileUpload   } from "react-icons/md";
+import { FaFileImport } from "react-icons/fa";
+
+import './EditScript.css'
+
+const EditScript = () => {
 
   const editorRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const [fileName,setFileName] = useState('')
+
   function handleEditorDidMount(editor,monaco){
     editorRef.current = editor
   }
-  function showValue(){
-    alert(editorRef.current.getValue())
-  }
 
-  const [errors,setErrors] = useState({})
-
-
-  const handleSubmit = (e) =>{
-    e.preventDefault()
-    console.log(formData)
-
-    const newErrors = {};
-
-    if(!formData.name){
-      newErrors.name = '名前を入力してください'
-    }
-    if (!formData.password) {
-      newErrors.password = 'パスワードを入力してください';
-    }
-  
-    if(Object.keys(newErrors).length === 0){
-      if(postUserData(formData)){
+  const handleFileChange = (event) =>{
+    const file = event.target.files[0]
+    if(file){
+      setFileName(file.name)
+      const reader = new FileReader()
+      reader.onload = (e) =>{
+        const content = e.target.result
+        if(editorRef.current){
+          editorRef.current.setValue(content)
+        }
       }
-      else{
-        setFormData({ name: '', password: ''})
-        setErrors({})
-        newErrors.name = '名前またはパスワードが違います'
-        setErrors(newErrors)
-        console.log('error')
-      }
-    }else{
-      setErrors(newErrors)
+      reader.readAsText(file)
     }
   }
 
-  const handleChange = (e) =>{
-    setFormData({...formData,[e.target.name]: e.target.value})
-    setErrors((prevError) => ({
-        ...prevError,[e.target.name]:''
-    }))
+  const handleUploadClick = () =>{
+    fileInputRef.current.click()
   }
+
+  const sendFile = async (content,fileName) =>{
+    const file = new Blob([content],{type: 'text/plain'})
+    const formData = new FormData()
+    formData.append('file', file, fileName)
+
+    try {
+      const response = await fetch('http://localhost:8000/upload', {
+      method: 'POST',
+      body: formData
+    });
+    if (response.ok) {
+      console.log('File uploaded successfully');
+    } else {
+      console.error('File upload failed');
+    }
+    } catch (error) {
+      console.error(error);
+    }
+    console.log("end")
+
+
+  }
+
+  const handleDownload = () =>{
+    if(editorRef.current){
+      const content = editorRef.current.getValue();
+      sendFile(content,'sample.js')
+    }
+  }
+
 
   return (
-    // <div className='container'>
-    //   <h1 className='heading'>ログイン画面</h1>
-    //   <form className='form' onSubmit={handleSubmit}>
-    //     <div className='form-field'>
-    //       <label className='label'>名前:</label>
-    //       {errors.name && <span className="error">{errors.name}</span>}
-    //       <input 
-    //         type='text'
-    //         name='name'
-    //         value={formData.name}
-    //         onChange= {handleChange}
-    //         className='input'
-    //       ></input>
-    //     </div>
-    //     <div className='form-field'>
-    //       <label className='label'>パスワード:</label>
-    //       {errors.password && <span className="error">{errors.password}</span>}
-    //       <input 
-    //         type='password'
-    //         name='password'
-    //         value={formData.password}
-    //         onChange= {handleChange}
-    //         className='input'
-    //       ></input>
-    //     </div>
-    //     <button type='submit' className='button'>
-    //       ログイン
-    //     </button>
-    //   </form>
-    // </div>
     <>
         <Editor
       height="90vh"
@@ -91,9 +74,18 @@ const Login = () => {
       defaultValue='// some commnet'
       onMount={handleEditorDidMount}
     />
+    <input  
+      type='file' 
+      onChange={handleFileChange} 
+      className='import-button'
+      ref={fileInputRef}
+      style={{display:'none'}}
+    ></input>
+    <span className='import-button' onClick={handleUploadClick}><FaFileImport></FaFileImport></span>
+    <span className='upload-button' onClick={handleDownload}><MdFileUpload  size={40} /></span>
     </>
 
   );
 }
 
-export default Login;
+export default EditScript;

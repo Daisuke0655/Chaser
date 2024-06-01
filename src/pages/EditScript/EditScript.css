@@ -1,0 +1,13 @@
+.upload-button{
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    cursor: pointer;
+}
+
+.import-button{
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    cursor: pointer;
+}
