@@ -1,5 +1,5 @@
 import postMatchLog from "../../components/postMatchLog"
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useMemo} from "react";
 import ReactDOM from "react-dom"
 import './Match.css';
 
@@ -20,61 +20,68 @@ const Match = async () => {
     
     const matchLog = await postMatchLog("SampleLog");
 
-    let fields = [];
-    let coldPos, hotPos;
+    console.log(matchLog)
 
-    for(let i = 0; i < height; i++) {
-        for(let j = 0; j < width; j++) {
-            if(matchLog.Field[i][j] === 'C') {
-                coldPos.x = i;
-                coldPos.y = j;
-            }
-            if(matchLog.Field[i][j] === 'H') {
-                hotPos.x = i;
-                hotPos.y = j;
-            }
-        }
-    }
+    const fields = useMemo(() => {
+        let fields = []
+        let coldPos = {"x": 0, "y": 0}, hotPos = {"x": 0, "y": 0};
 
-    let currentField = matchLog.Field.map((row) => row.split(""));
-    fields.push(currentField);
-
-    matchLog.Acts.forEach(act => {
-        const turn = fields.length()
-        let px, py;
-        if(turn % 2) { //Cold
-            px = hotPos.x + dir[act[1]].x;
-            py = hotPos.y + dir[act[1]].y;
-        } else { //Hot
-            px = hotPos.x + dir[act[1]].x;
-            py = hotPos.y + dir[act[1]].y;
-        }
-        if(act[0] === 'p') {
-            currentField[px][py] = "W";
-        } else if (act[0] === 'w') {
-            if(turn % 2) {
-                currentField[coldPos.x][coldPos.y] = "."
-                coldPos.x = px;
-                coldPos.y = py;
-                currentField[coldPos.x][coldPos.y] = "C"
-            } else {
-                currentField[hotPos.x][hotPos.y] = "."
-                hotPos.x = px;
-                hotPos.y = py;
-                currentField[hotPos.x][hotPos.y] = "H"
+        for(let i = 0; i < height; i++) {
+            for(let j = 0; j < width; j++) {
+                if(matchLog.Field[i][j] === 'C') {
+                    coldPos.x = i;
+                    coldPos.y = j;
+                }
+                if(matchLog.Field[i][j] === 'H') {
+                    hotPos.x = i;
+                    hotPos.y = j;
+                }
             }
         }
 
+        let currentField = matchLog.Field.map((row) => row.split(""));
         fields.push(currentField);
 
+        matchLog.Acts.forEach(act => {
+            const turn = fields.length
+            let px, py;
+            if(turn % 2) { //Cold
+                px = hotPos.x + dir[act[1]].x;
+                py = hotPos.y + dir[act[1]].y;
+            } else { //Hot
+                px = hotPos.x + dir[act[1]].x;
+                py = hotPos.y + dir[act[1]].y;
+            }
+            if(act[0] === 'p') {
+                currentField[px][py] = "W";
+            } else if (act[0] === 'w') {
+                if(turn % 2) {
+                    currentField[coldPos.x][coldPos.y] = "."
+                    coldPos.x = px;
+                    coldPos.y = py;
+                    currentField[coldPos.x][coldPos.y] = "C"
+                } else {
+                    currentField[hotPos.x][hotPos.y] = "."
+                    hotPos.x = px;
+                    hotPos.y = py;
+                    currentField[hotPos.x][hotPos.y] = "H"
+                }
+            }
+
+            fields.push(currentField);
+
+        });
+        return fields;
     });
+
+    
 
     const previousTurn = () => {
         if(turnNum > 1) setTurnNum(turnNum - 1);
     }
 
     const nextTurn = () => {
-        if(turnNum < matchLog.Acts.length()) setTurnNum(turnNum + 1)
+        if(turnNum < matchLog.Acts.length) setTurnNum(turnNum + 1)
     }
 
 
@@ -127,7 +134,7 @@ const Match = async () => {
         }
 
 
-    }, [turnNum]);
+    }, [turnNum, fields]);
 
     return (
         <div className="container">
