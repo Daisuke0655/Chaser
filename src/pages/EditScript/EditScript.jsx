@@ -81,8 +81,8 @@ const EditScript = () => {
       ref={fileInputRef}
       style={{display:'none'}}
     ></input>
-    <span className='import-button' onClick={handleUploadClick}><FaFileImport></FaFileImport></span>
-    <span className='upload-button' onClick={handleDownload}><MdFileUpload  size={40} /></span>
+    <span className='import-button' onClick={handleUploadClick}><FaFileImport size={20} color='white'></FaFileImport></span>
+    <span className='upload-button' onClick={handleDownload}><MdFileUpload  size={25} color='white'/></span>
     </>
 
   );
