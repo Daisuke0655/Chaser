@@ -2,7 +2,14 @@
   text-align: center;
 }
 
-.App-logo {
+:root {
+  --button-widget-color: #61dafb;
+  --button-widget-hover-color: #0d8fbd;
+  --light-text-color: #fff;
+  --dark-text-color: #333;
+}
+
+/* .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
@@ -35,4 +42,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */

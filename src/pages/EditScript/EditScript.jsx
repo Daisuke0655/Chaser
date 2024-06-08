@@ -79,6 +79,7 @@ const EditScript = () => {
       onChange={handleFileChange} 
       className='import-button'
       ref={fileInputRef}
+      accept=".py"
       style={{display:'none'}}
     ></input>
     <span className='import-button' onClick={handleUploadClick}><FaFileImport size={20} color='white'></FaFileImport></span>
