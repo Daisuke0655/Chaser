@@ -13,7 +13,7 @@ const Login = () => {
   const [errors,setErrors] = useState({})
 
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = async (e) =>{
     e.preventDefault()
     console.log(formData)
 
@@ -27,7 +27,8 @@ const Login = () => {
     }
   
     if(Object.keys(newErrors).length === 0){
-      if(postUserData(formData) === 'ok'){
+      const result = await postUserData(formData)
+      if(result){
         navigate('/initial') 
       }
       else{
