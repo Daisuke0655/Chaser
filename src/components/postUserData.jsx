@@ -15,14 +15,8 @@ const postUserData = async (data) => {
 
   try {
     const response = await fetch('https://kdrlnlqasu54hhc7jgyfqhly7i0nbgkg.lambda-url.ap-northeast-1.on.aws/', requestOptions);
-    if(response.ok){
-      console.log('good')
-      return 'ok'
-    }
-    else{
-      console.log('bad')
-      return 'bad'
-    }
+    if(response.ok) return 1
+    else return 0
   } catch (error) {
     console.error('Error:', error);
     throw error;
