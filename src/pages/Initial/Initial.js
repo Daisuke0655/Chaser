@@ -42,6 +42,11 @@
       console.log("complete uploadFile")
     }
 
+    const onClickGameButton = () => {
+      console.log("taisen")
+      navigate('/selectEnem')
+    }
+
     const onClickFileButton = () => {
       console.log("onClickButton")
       console.log(inputRef.current)
@@ -57,7 +62,7 @@
       <div className="initial">
         <h1>Welcome to CHaser</h1>
         <div className="button-box">
-          <button className="button-style">対戦を始める</button>
+          <button className="button-style" onClick={onClickGameButton}>対戦を始める</button>
         </div>
         <div className="button-box">
           <button className="button-style" onClick={onClickLogButton}>ログを見る</button>
