@@ -9,15 +9,23 @@ const postUserData = async (data) => {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(jsonData)
+    body: JSON.stringify(jsonData),
+    mode: 'cors'
   };
 
   try {
-    const response = await fetch('http://localhost:8000/', requestOptions);
-    return response.ok;
+    const response = await fetch('https://kdrlnlqasu54hhc7jgyfqhly7i0nbgkg.lambda-url.ap-northeast-1.on.aws/', requestOptions);
+    if(response.ok){
+      console.log('good')
+      return 'ok'
+    }
+    else{
+      console.log('bad')
+      return 'bad'
+    }
   } catch (error) {
     console.error('Error:', error);
-    throw error;  // 必要に応じてエラーを再スロー
+    throw error;
   }
 };
 

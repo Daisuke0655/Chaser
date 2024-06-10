@@ -27,7 +27,7 @@ const Login = () => {
     }
   
     if(Object.keys(newErrors).length === 0){
-      if(postUserData(formData)){
+      if(postUserData(formData) === 'ok'){
         navigate('/initial') 
       }
       else{
