@@ -35,15 +35,18 @@ const EditScript = () => {
     fileInputRef.current.click()
   }
 
-  const sendFile = async (content,fileName) =>{
-    const file = new Blob([content],{type: 'text/plain'})
-    const formData = new FormData()
-    formData.append('file', file, fileName)
-
+  const sendFile = async (content) =>{
+    const jsonData = {
+      UserID: 'Sample',
+      slot: 0,
+      program: content,
+      language: 'python'
+    }
     try {
-      const response = await fetch('http://localhost:8000/upload', {
+      const response = await fetch('https://hpaiddjrprewsmr3kjbbvk5sfe0jmuyd.lambda-url.ap-northeast-1.on.aws/', {
       method: 'POST',
-      body: formData
+      body: JSON.stringify(jsonData),
+      mode: 'cors'
     });
     if (response.ok) {
       console.log('File uploaded successfully');
@@ -61,7 +64,8 @@ const EditScript = () => {
   const handleDownload = () =>{
     if(editorRef.current){
       const content = editorRef.current.getValue();
-      sendFile(content,'sample.js')
+      console.log(content)
+      sendFile(content)
     }
   }
 
@@ -70,8 +74,8 @@ const EditScript = () => {
     <>
         <Editor
       height="90vh"
-      defaultLanguage='javascript'
-      defaultValue='// some commnet'
+      defaultLanguage='python'
+      defaultValue='# some commnet'
       onMount={handleEditorDidMount}
     />
     <input  
