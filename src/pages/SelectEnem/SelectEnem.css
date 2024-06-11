@@ -1,0 +1,91 @@
+.selectEnem{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    /*background-color: blue;*/
+}
+
+.search{
+    display: flex;
+    justify-content: center;
+    margin: 8px;
+}
+
+.search_bar > input {
+    border: none !important;
+    background-color: #f0f2f5;
+}
+
+
+.search_bar > input:focus {
+    outline-width: 0;
+}
+
+.program_Container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /*background-color: aqua*/
+}
+
+.program_items{
+    min-width: 96px;
+    min-height: 96px;
+    margin: 4px;
+    /*background-color: grey;*/
+    justify-content: center;
+}
+
+.program_buttons_hot{
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    background-color: rgb(255, 67, 67);
+    border: 0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.program_buttons_hot:hover {
+    background-color: rgb(161, 40, 40);
+  }
+
+.program_buttons_cool{
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    background-color: rgb(67, 117, 255);
+    border: 0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.program_buttons_cool:hover {
+    background-color: rgb(43, 74, 161);
+}
+
+.startButton{
+    margin: 16px;
+    line-height: 2.5;
+    padding: 10px 20px;
+    min-width: 256px;
+    font-size: 20px;
+    background-color: #ffffff;
+    border: 1;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.startButton:hover {
+    background-color: #c3c3c3;
+}
+
+.backButton{
+    line-height: 2.5;
+    width: 64px;
+    height: 40px;
+    justify-content: center;
+}
