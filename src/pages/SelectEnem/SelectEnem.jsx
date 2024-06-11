@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
     
     
     const onClickStartButton = async() => {
+        navigate('/match')
         if(!nameHot){console.log("!nameHot");return}
         if(!nameCool){console.log("!nameCool");return}
         if(slotHot==null){console.log("!slotHot");return}
@@ -28,21 +29,23 @@ import { useNavigate } from 'react-router-dom';
         formData.append('h_slot', slotHot);
         formData.append('board', board);
         formData.append('turn', turn);
-        
-        return
+        navigate('/match')
 
-        try {
-            const response = await fetch('http://localhost:8000/', {
-            method: 'POST',
-            body: formData
-          });
-            const data = await response.json();
-            console.log(data);
-          } catch (error) {
-            console.error(error);
-          }
+        //現状はmatchに遷移するが、後に選んだファイルから対戦をできるように実装してください
+        // return
+
+        // try {
+        //     const response = await fetch('http://localhost:8000/', {
+        //     method: 'POST',
+        //     body: formData
+        //   });
+        //     const data = await response.json();
+        //     console.log(data);
+        //   } catch (error) {
+        //     console.error(error);
+        //   }
     
-          console.log("complete uploadFile")
+        //   console.log("complete uploadFile")
     }
     
     const onClickSlotButton = (num,HorC) => {
