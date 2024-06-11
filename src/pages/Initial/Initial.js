@@ -53,8 +53,11 @@
       inputRef.current.click()
     };
 
+    const onClickEditScriptButton = () =>{
+      navigate('/edit')
+    }
+
     const onClickLogButton = () => {
-      console.log("nandedayo")
       navigate('/log') 
     };
     
@@ -65,6 +68,11 @@
           <button className="button-style" onClick={onClickGameButton}>対戦を始める</button>
         </div>
         <div className="button-box">
+        <button className="button-style" onClick={onClickEditScriptButton}>ファイルを編集</button>
+        </div>
+        {
+        //後で多分消す
+        /* <div className="button-box">
           <button className="button-style" onClick={onClickLogButton}>ログを見る</button>
         </div>
         <div className="button-box">
@@ -78,7 +86,7 @@
             type="file"
             accept=".py"
             onChange={onFileInputChange}/>  
-        </div>
+        </div> */}
       </div>
     );
   }

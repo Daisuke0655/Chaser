@@ -1,0 +1,23 @@
+.upload-button{
+    position: fixed;
+    bottom: 50px;
+    right: 55px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: var(--button-widget-color);
+    box-shadow: 0 2px 7px rgba(0, 0, 0, .3);
+	-webkit-box-shadow: 0 2px 7px rgba(0, 0, 0, .3);
+    border-radius: 50%;
+}
+
+.import-button{
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    padding: 14px;
+    cursor: pointer;
+    background-color: var(--button-widget-color);
+    box-shadow: 0 2px 7px rgba(0, 0, 0, .3);
+	-webkit-box-shadow: 0 2px 7px rgba(0, 0, 0, .3);
+    border-radius: 50%;
+}

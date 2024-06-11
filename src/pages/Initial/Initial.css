@@ -13,8 +13,8 @@
   padding: 10px 20px;
   min-width: 256px;
   font-size: 20px;
-  color: #fff;
-  background-color: #61dafb;
+  color: var(--light-text-color);
+  background-color: var(--button-widget-color);
   border: 0;
   border-radius: 5px;
   cursor: pointer;
