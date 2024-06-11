@@ -3,6 +3,7 @@ import postUserData from '../../components/postUserData'
 import { Editor } from '@monaco-editor/react';
 import { MdFileUpload   } from "react-icons/md";
 import { FaFileImport } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 import './EditScript.css'
 
@@ -11,9 +12,15 @@ const EditScript = () => {
   const editorRef = useRef(null);
   const fileInputRef = useRef(null);
   const [fileName,setFileName] = useState('')
+  const [isPopUpVisible,setPopUpVisible] = useState(false)
+  const navigate = useNavigate()
 
   function handleEditorDidMount(editor,monaco){
     editorRef.current = editor
+  }
+
+  const togglePopUp = () => {
+    setPopUpVisible(!isPopUpVisible)
   }
 
   const handleFileChange = (event) =>{
@@ -35,10 +42,10 @@ const EditScript = () => {
     fileInputRef.current.click()
   }
 
-  const sendFile = async (content) =>{
+  const sendFile = async (content,num) =>{
     const jsonData = {
       UserID: 'Sample',
-      slot: 0,
+      slot: num,
       program: content,
       language: 'python'
     }
@@ -50,6 +57,7 @@ const EditScript = () => {
     });
     if (response.ok) {
       console.log('File uploaded successfully');
+      navigate('/initial')
     } else {
       console.error('File upload failed');
     }
@@ -61,11 +69,12 @@ const EditScript = () => {
 
   }
 
-  const handleDownload = () =>{
+  const handleDownload = (num) =>{
     if(editorRef.current){
+      togglePopUp()
       const content = editorRef.current.getValue();
       console.log(content)
-      sendFile(content)
+      sendFile(content,num)
     }
   }
 
@@ -87,7 +96,21 @@ const EditScript = () => {
       style={{display:'none'}}
     ></input>
     <span className='import-button' onClick={handleUploadClick}><FaFileImport size={20} color='white'></FaFileImport></span>
-    <span className='upload-button' onClick={handleDownload}><MdFileUpload  size={25} color='white'/></span>
+    <span className='upload-button' onClick={togglePopUp}><MdFileUpload  size={25} color='white'/></span>
+    {isPopUpVisible &&(
+      <div className='popUp'>
+        <p>保存するスロットを選択して下さい</p>
+        <div className='program_container'>
+          <div className="program_items">
+            <button className="program_buttons_hot" onClick={()=>handleDownload(0)}>スロット１</button></div>
+          <div className="program_items">
+            <button className="program_buttons_hot" onClick={()=>handleDownload(1)}>スロット２</button></div>
+          <div className="program_items">
+            <button className="program_buttons_hot" onClick={()=>handleDownload(2)}>スロット３</button></div>
+        </div>
+        
+      </div>
+    )}
     </>
 
   );
