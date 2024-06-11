@@ -43,8 +43,7 @@
     }
 
     const onClickGameButton = () => {
-      console.log("taisen")
-      navigate('/selectEnem')
+      navigate('/select')
     }
 
     const onClickFileButton = () => {
