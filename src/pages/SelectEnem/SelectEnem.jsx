@@ -1,51 +1,80 @@
 import React, { useState, useRef } from "react";
 import './SelectEnem.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams} from 'react-router-dom';
 
 
   function SelectEnem() {
     const [nameHot,setNameHot]=useState('')
     const [nameCool,setNameCool]=useState('')
-    const [slotHot,setSlotHot]=useState()
-    const [slotCool,setSlotCool]=useState()
-    const [board,setBoard]=useState()
-    const [turn,setTurn]=useState()
+    const [slotHot,setSlotHot]=useState(0)
+    const [slotCool,setSlotCool]=useState(0)
+    const [board,setBoard]=useState([
+        '000300000300000',
+        '0C0000000000000',
+        '000300030000300',
+        '022200000000003',
+        '000003000300030',
+        '003000003000000',
+        '000000000000220',
+        '000300030000000',
+        '023000030000032',
+        '300000000003000',
+        '020200000000000',
+        '000000003000300',
+        '000300030000300',
+        '300000000002220',
+        '000003000003000',
+        '0000000000000H0',
+        '000003000003000'
+    ])//0->.,3->I
+    const [turn,setTurn]=useState(1)
     const navigate = useNavigate()
     
     
     const onClickStartButton = async() => {
-        navigate('/match')
         if(!nameHot){console.log("!nameHot");return}
         if(!nameCool){console.log("!nameCool");return}
-        if(slotHot==null){console.log("!slotHot");return}
-        if(slotCool=null){console.log("!slotCool");return}
-        //if(board==null){console.log("!board");return}
-        //if(turn==null){console.log("!turn");return}
+        if(slotHot<0){console.log("!slotHot");return}
+        if(slotCool<0){console.log("!slotCool");return}
+        if(!board){console.log("!board");return}
+        if(turn<1){console.log("!turn");return}
 
-        const formData = new FormData()
-        formData.append('c_id', nameCool);
-        formData.append('c_slot', slotCool);
-        formData.append('h_id', nameHot);
-        formData.append('h_slot', slotHot);
-        formData.append('board', board);
-        formData.append('turn', turn);
-        navigate('/match')
+        const sendData = {
+            "c_id": nameCool,
+            "c_slot": slotCool,
+            "h_id": nameHot,
+            "h_slot": slotHot,
+            "board": board,
+            "turn": Number(turn)
+        };
 
-        //現状はmatchに遷移するが、後に選んだファイルから対戦をできるように実装してください
-        // return
-
-        // try {
-        //     const response = await fetch('http://localhost:8000/', {
-        //     method: 'POST',
-        //     body: formData
-        //   });
-        //     const data = await response.json();
-        //     console.log(data);
-        //   } catch (error) {
-        //     console.error(error);
-        //   }
+         try {
+            const response = await fetch('http://3.112.173.245/battle', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: JSON.stringify(sendData),
+            mode: 'cors'
+          });
+            const receiveData = await response.json();
+            const boardData = {
+                Field: board,
+                Turn: turn
+            }
+            const mergedData = {
+                ...receiveData,
+                ...boardData
+            }
+            console.log('mergedData: ')
+            console.log(mergedData)
+            const encodedData = encodeURIComponent(JSON.stringify(mergedData));
+            navigate(`/match/${encodedData}`)
+          } catch (error) {
+            console.error(error);
+          }
     
-        //   console.log("complete uploadFile")
+           console.log("complete start")
     }
     
     const onClickSlotButton = (num,HorC) => {
@@ -101,11 +130,8 @@ import { useNavigate } from 'react-router-dom';
                     <button className="program_buttons_cool" onClick={()=>onClickSlotButton(2,"C")}>スロット３</button></div>
             </div>
             <div>{"選択中 name:"+nameCool+" slot:"+slotCool}</div>
-            <div>
-                <button className="startButton" onClick={onClickStartButton}>対戦を始める</button>
-            </div>
             <div className="search">
-                <label for="turn">ターン数</label>
+                <label htmlFor="turn">ターン数</label>
                 <input
                 value={turn}
                 id="turn"
@@ -113,6 +139,12 @@ import { useNavigate } from 'react-router-dom';
                 type="number"
                 min={1}
                 />
+            </div>
+            <div>
+                <button className="startButton" onClick={onClickStartButton}>対戦を始める</button>
+            </div>
+            <div>
+                <button className="createMapButton" onClick={onClickStartButton}>マップを制作</button>
             </div>
             <div>
                 <button className="backButton" onClick={onClickBackButton}>←戻る</button>

@@ -21,7 +21,7 @@ const App = () =>{
                 <Route path="/edit" element = {<EditScript />}></Route>
                 <Route path="/editMap" element = {<EditMap />}></Route>
                 <Route path="/select" element = {<SelectEnem/>}></Route>
-                <Route path="/match" element = {<Match/>}></Route>
+                <Route path="/match/:jsonData" element = {<Match/>}></Route>
             </Routes>
             </BrowserRouter>
         </div>
