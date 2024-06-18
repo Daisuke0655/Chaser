@@ -77,12 +77,14 @@ const Match = () => {
                     currentField[px][py] = "2";
                 } else if (act[0] === 'w') {
                     if (turn % 2) {
-                        currentField[coldPos.x][coldPos.y] = "0";
+                        if(currentField[px][py] === "3") currentField[coldPos.x][coldPos.y] = "2";
+                        else currentField[coldPos.x][coldPos.y] = "0";
                         coldPos.x = px;
                         coldPos.y = py;
                         currentField[coldPos.x][coldPos.y] = "C";
                     } else {
-                        currentField[hotPos.x][hotPos.y] = "0";
+                        if(currentField[px][py] === "3") currentField[hotPos.x][hotPos.y] = "2";
+                        else currentField[hotPos.x][hotPos.y] = "0";
                         hotPos.x = px;
                         hotPos.y = py;
                         currentField[hotPos.x][hotPos.y] = "H";
@@ -108,6 +110,10 @@ const Match = () => {
             const ctx = canvasElem.getContext("2d");
 
             fieldDraw(ctx, height, width, fields[turnNum])
+            
+            if(turnNum % 2) {
+
+            }
         }
     }, [turnNum, fields]);
 
