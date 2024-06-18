@@ -1,5 +1,4 @@
 import React, { useState, useRef} from 'react';
-import postUserData from '../../components/postUserData'
 import { Editor } from '@monaco-editor/react';
 import { MdFileUpload   } from "react-icons/md";
 import { FaFileImport } from "react-icons/fa";
@@ -101,13 +100,13 @@ const EditScript = () => {
     {isPopUpVisible &&(
       <div className='popUp'>
         <p>保存するスロットを選択して下さい</p>
-        <div className='program_container'>
+        <div className='program_Container'>
           <div className="program_items">
-            <button className="program_buttons_hot" onClick={()=>handleDownload(0)}>スロット１</button></div>
+            <button className="slot_send_button" onClick={()=>handleDownload(0)}>スロット１</button></div>
           <div className="program_items">
-            <button className="program_buttons_hot" onClick={()=>handleDownload(1)}>スロット２</button></div>
+            <button className="slot_send_button" onClick={()=>handleDownload(1)}>スロット２</button></div>
           <div className="program_items">
-            <button className="program_buttons_hot" onClick={()=>handleDownload(2)}>スロット３</button></div>
+            <button className="slot_send_button" onClick={()=>handleDownload(2)}>スロット３</button></div>
         </div>
         
       </div>
