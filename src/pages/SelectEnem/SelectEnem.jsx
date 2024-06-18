@@ -1,7 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, } from "react";
 import './SelectEnem.css';
 import { useNavigate, useParams} from 'react-router-dom';
-
+import EditMap from "../EditMap/EditMap";
 
   function SelectEnem() {
     const {userId} = useParams()
@@ -9,7 +9,10 @@ import { useNavigate, useParams} from 'react-router-dom';
     const [nameCool,setNameCool]=useState(userId)
     const [slotHot,setSlotHot]=useState(0)
     const [slotCool,setSlotCool]=useState(0)
-    const [board,setBoard]=useState([
+    const [turn,setTurn]=useState(100)
+    const navigate = useNavigate()
+    const [isPopUpVisible, setIsPopUpVisible] = useState(false);
+    const [board, setBoard] = useState([
         '000300000300000',
         '0C0000000000000',
         '000300030000300',
@@ -27,9 +30,7 @@ import { useNavigate, useParams} from 'react-router-dom';
         '000003000003000',
         '0000000000000H0',
         '000003000003000'
-    ])//0->.,3->I
-    const [turn,setTurn]=useState(100)
-    const navigate = useNavigate()    
+    ]);    
     
     const onClickStartButton = async() => {
         if(!nameHot){console.log("!nameHot");return}
@@ -76,11 +77,19 @@ import { useNavigate, useParams} from 'react-router-dom';
     
            console.log("complete start")
     }
+
+    const togglePopUp = () => {
+        setIsPopUpVisible(!isPopUpVisible)
+    }
+
+    const handleSaveMap = (newBoard) =>{
+        setBoard(newBoard)
+    }
     
     const onClickSlotButton = (num,HorC) => {
-        if(HorC=="H"){
+        if(HorC==="H"){
             setSlotHot(num)
-        }else if(HorC=="C"){
+        }else if(HorC==="C"){
             setSlotCool(num)
         }
     }
@@ -92,64 +101,72 @@ import { useNavigate, useParams} from 'react-router-dom';
 
 
     return (
-        <div className='selectEnem'>
-            <div className="search">    
-                <input
-                className="search_bar_input"
-                value={nameHot}
-                placeholder="HOTプレイヤー名を入力"
-                onChange={e=>setNameHot(e.target.value)}
-                type="text"
-                />
-            </div>
-            <div className="program_Container">
-                <div className="program_items">
-                    <button className="program_buttons_hot" onClick={()=>onClickSlotButton(0,"H")}>スロット１</button></div>
-                <div className="program_items">
-                    <button className="program_buttons_hot" onClick={()=>onClickSlotButton(1,"H")}>スロット２</button></div>
-                <div className="program_items">
-                    <button className="program_buttons_hot" onClick={()=>onClickSlotButton(2,"H")}>スロット３</button></div>
-            </div>
-            <div>{"選択中 name:"+nameHot+" slot:"+slotHot}</div>
+            <>
+            <div className='selectEnem'>
+                <div className="search">    
+                    <input
+                    className="search_bar_input"
+                    value={nameHot}
+                    placeholder="HOTプレイヤー名を入力"
+                    onChange={e=>setNameHot(e.target.value)}
+                    type="text"
+                    />
+                </div>
+                <div className="program_Container">
+                    <div className="program_items">
+                        <button className="program_buttons_hot" onClick={()=>onClickSlotButton(0,"H")}>スロット１</button></div>
+                    <div className="program_items">
+                        <button className="program_buttons_hot" onClick={()=>onClickSlotButton(1,"H")}>スロット２</button></div>
+                    <div className="program_items">
+                        <button className="program_buttons_hot" onClick={()=>onClickSlotButton(2,"H")}>スロット３</button></div>
+                </div>
+                <div>{"選択中 name:"+nameHot+" slot:"+slotHot}</div>
 
-            <div className="search">    
-                <input
-                className="search_bar_input"
-                value={nameCool}
-                placeholder="COOLプレイヤー名を入力"
-                onChange={e=>setNameCool(e.target.value)}
-                type="text"
-                />
+                <div className="search">    
+                    <input
+                    className="search_bar_input"
+                    value={nameCool}
+                    placeholder="COOLプレイヤー名を入力"
+                    onChange={e=>setNameCool(e.target.value)}
+                    type="text"
+                    />
+                </div>
+                <div className="program_Container">
+                    <div className="program_items">
+                        <button className="program_buttons_cool" onClick={()=>onClickSlotButton(0,"C")}>スロット１</button></div>
+                    <div className="program_items">
+                        <button className="program_buttons_cool" onClick={()=>onClickSlotButton(1,"C")}>スロット２</button></div>
+                    <div className="program_items">
+                        <button className="program_buttons_cool" onClick={()=>onClickSlotButton(2,"C")}>スロット３</button></div>
+                </div>
+                <div>{"選択中 name:"+nameCool+" slot:"+slotCool}</div>
+                <div className="search">
+                    <label htmlFor="turn">ターン数</label>
+                    <input
+                    value={turn}
+                    id="turn"
+                    onChange={e=>setTurn(e.target.value)}
+                    type="number"
+                    min={1}
+                    />
+                </div>
+                <div>
+                    <button className="startButton" onClick={onClickStartButton}>対戦を始める</button>
+                </div>
+                <div>
+                    <button className="createMapButton" onClick={togglePopUp}>マップを制作</button>
+                </div>
+                <div>
+                    <button className="backButton" onClick={onClickBackButton}>←戻る</button>
+                </div>
+                
             </div>
-            <div className="program_Container">
-                <div className="program_items">
-                    <button className="program_buttons_cool" onClick={()=>onClickSlotButton(0,"C")}>スロット１</button></div>
-                <div className="program_items">
-                    <button className="program_buttons_cool" onClick={()=>onClickSlotButton(1,"C")}>スロット２</button></div>
-                <div className="program_items">
-                    <button className="program_buttons_cool" onClick={()=>onClickSlotButton(2,"C")}>スロット３</button></div>
-            </div>
-            <div>{"選択中 name:"+nameCool+" slot:"+slotCool}</div>
-            <div className="search">
-                <label htmlFor="turn">ターン数</label>
-                <input
-                value={turn}
-                id="turn"
-                onChange={e=>setTurn(e.target.value)}
-                type="number"
-                min={1}
-                />
-            </div>
-            <div>
-                <button className="startButton" onClick={onClickStartButton}>対戦を始める</button>
-            </div>
-            <div>
-                <button className="createMapButton" onClick={onClickStartButton}>マップを制作</button>
-            </div>
-            <div>
-                <button className="backButton" onClick={onClickBackButton}>←戻る</button>
-            </div>
-        </div>
+            {isPopUpVisible &&
+                <div className="popUp">
+                    <EditMap onClose={togglePopUp} onSave={handleSaveMap} />
+                </div>
+            }
+        </>
     );
   }
 

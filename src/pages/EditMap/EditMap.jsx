@@ -16,21 +16,42 @@ const lineWidth = 2;
 const blockSize = 20;
 const itemLineWidth = 4;
 const itemBlockSize = 40;
-
+const defaultMap = [
+    '000300000300000',
+    '0C0000000000000',
+    '000300030000300',
+    '022200000000003',
+    '000003000300030',
+    '003000003000000',
+    '000000000000220',
+    '000300030000000',
+    '023000030000032',
+    '300000000003000',
+    '020200000000000',
+    '000000003000300',
+    '000300030000300',
+    '300000000002220',
+    '000003000003000',
+    '0000000000000H0',
+    '000003000003000'
+]
 function structuredClone(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
 
-const EditMap = () => {
+const EditMap = ({onClose,onSave}) => {
+    // const [field, setField] = useState(() => {
+    //     const defaultField = [];
+    //     for (let i = 0; i < height; i++) {
+    //         defaultField.push(Array(width).fill('0'));
+    //     }
+    //     defaultField[0][0] = "C";
+    //     defaultField[height - 1][width - 1] = "H";
+    //     return defaultField;
+    // });
     const [field, setField] = useState(() => {
-        const defaultField = [];
-        for (let i = 0; i < height; i++) {
-            defaultField.push(Array(width).fill('0'));
-        }
-        defaultField[0][0] = "C";
-        defaultField[height - 1][width - 1] = "H";
-        return defaultField;
-    });
+        return defaultMap.map((row) => {return row.split("")})
+    })
     const [selectedItem, setSelectedItem] = useState(0);
 
     useEffect(() => {
@@ -93,17 +114,19 @@ const EditMap = () => {
         }
     };
 
-    const handleExport = (ev) => {
-        let content = field.map((row) => row.join(""));
-        console.log(content);
-    }
+    const handleExport = () => {
+        const newContent = field.map((row) => row.join(""));
+        onSave(newContent);
+        onClose();
+    };
 
     return (
         <div className="container">
             <h1 className="heading">盤面編集</h1>
             <canvas onClick={handleItemClicked} width={items.length * (itemLineWidth + itemBlockSize) + itemLineWidth} height={itemLineWidth * 2 + itemBlockSize} id="items"></canvas>
             <canvas onClick={handleFieldClicked} width={width * (lineWidth + blockSize) + lineWidth} height={height * (lineWidth + blockSize) + lineWidth} id="canvas"></canvas>
-            <button id="export" href="#" download="map.txt" onClick={handleExport}>ファイル出力</button>
+            <br></br>
+            <button id="export" onClick={handleExport}>保存</button>
         </div>
     );
 }
