@@ -16,11 +16,11 @@ const App = () =>{
             <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login />}></Route>
-                <Route path="/initial" element={<InitialPage />}></Route>
+                <Route path="/initial/:userId" element={<InitialPage />}></Route>
                 <Route path="/log" element = {<Log />}></Route>
-                <Route path="/edit" element = {<EditScript />}></Route>
+                <Route path="/edit/:userId" element = {<EditScript />}></Route>
                 <Route path="/editMap" element = {<EditMap />}></Route>
-                <Route path="/select" element = {<SelectEnem/>}></Route>
+                <Route path="/select/:userId" element = {<SelectEnem/>}></Route>
                 <Route path="/match/:jsonData" element = {<Match/>}></Route>
             </Routes>
             </BrowserRouter>

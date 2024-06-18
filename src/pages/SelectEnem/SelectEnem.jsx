@@ -4,8 +4,9 @@ import { useNavigate, useParams} from 'react-router-dom';
 
 
   function SelectEnem() {
-    const [nameHot,setNameHot]=useState('')
-    const [nameCool,setNameCool]=useState('')
+    const {userId} = useParams()
+    const [nameHot,setNameHot]=useState(userId)
+    const [nameCool,setNameCool]=useState(userId)
     const [slotHot,setSlotHot]=useState(0)
     const [slotCool,setSlotCool]=useState(0)
     const [board,setBoard]=useState([
@@ -27,9 +28,8 @@ import { useNavigate, useParams} from 'react-router-dom';
         '0000000000000H0',
         '000003000003000'
     ])//0->.,3->I
-    const [turn,setTurn]=useState(1)
-    const navigate = useNavigate()
-    
+    const [turn,setTurn]=useState(100)
+    const navigate = useNavigate()    
     
     const onClickStartButton = async() => {
         if(!nameHot){console.log("!nameHot");return}
@@ -87,7 +87,7 @@ import { useNavigate, useParams} from 'react-router-dom';
 
     const onClickBackButton=()=>{
         console.log("back to the InitialPage");
-        navigate('/initial')
+        navigate(`/initial/${userId}`)
     }
 
 
