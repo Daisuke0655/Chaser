@@ -1,6 +1,6 @@
 import postMatchLog from "../../components/postMatchLog";
 import React, { useState, useEffect, useMemo } from "react";
-import ReactDOM from "react-dom";
+import { useParams } from "react-router-dom";
 import './Match.css';
 import fieldDraw from "../../components/fieldDraw";
 
@@ -20,14 +20,21 @@ const Match = () => {
     const [turnNum, setTurnNum] = useState(0);
     const [matchLog, setMatchLog] = useState(null);
     const [fields, setFields] = useState([]);
+    const { jsonData } = useParams();    
 
     useEffect(() => {
         const fetchData = async () => {
-            const log = await postMatchLog("5b59e5ac-895d-41b6-a2e5-59865052bf40");
-            setMatchLog(log);
+            try{
+                const log = JSON.parse(jsonData);
+                setMatchLog(log)
+            }catch(error){
+                console.error('JSONパース中にエラー発生:',error)
+            }
         };
-        fetchData();
-    }, []);
+        if(jsonData){
+            fetchData();
+        }
+}, []);
 
     useEffect(() => {
         if (matchLog) {
@@ -49,12 +56,14 @@ const Match = () => {
 
             // let currentField = matchLog.Field.map((row) => row.split(""));
             let currentField = [];
-            matchLog.Field.forEach(row => {
-                currentField.push(row.split(""));
-            })
+            if(matchLog && matchLog.Field){
+                matchLog.Field.forEach(row => {
+                    currentField.push(row.split(""));
+                })
+            }
             newFields.push(structuredClone(currentField));
 
-            matchLog.Acts.forEach(act => {
+            matchLog.log.forEach(act => {
                 const turn = newFields.length;
                 let px, py;
                 if (turn % 2) { // Cold
@@ -68,17 +77,18 @@ const Match = () => {
                     currentField[px][py] = "2";
                 } else if (act[0] === 'w') {
                     if (turn % 2) {
-                        currentField[coldPos.x][coldPos.y] = ".";
+                        currentField[coldPos.x][coldPos.y] = "0";
                         coldPos.x = px;
                         coldPos.y = py;
                         currentField[coldPos.x][coldPos.y] = "C";
                     } else {
-                        currentField[hotPos.x][hotPos.y] = ".";
+                        currentField[hotPos.x][hotPos.y] = "0";
                         hotPos.x = px;
                         hotPos.y = py;
                         currentField[hotPos.x][hotPos.y] = "H";
                     }
                 }
+                console.log(currentField)
                 newFields.push(structuredClone(currentField));
             });
             setFields(structuredClone(newFields));
