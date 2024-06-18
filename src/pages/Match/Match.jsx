@@ -88,7 +88,6 @@ const Match = () => {
                         currentField[hotPos.x][hotPos.y] = "H";
                     }
                 }
-                console.log(currentField)
                 newFields.push(structuredClone(currentField));
             });
             setFields(structuredClone(newFields));
