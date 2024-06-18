@@ -1,69 +1,46 @@
-import React, {useEffect, useState, useMemo} from "react";
-import fieldDraw from "../../components/fieldDraw";
-
+import React, { useEffect, useState } from "react";
 import "./EditMap.css";
-import { useCallback } from "react";
+import fieldDraw from "../../components/fieldDraw"; // fieldDrawメソッドの実装を確認してください
+
+const items = [
+    { "char": ".", "index": 0 },
+    { "char": "2", "index": 1 },
+    { "char": "3", "index": 2 },
+    { "char": "C", "index": 3 },
+    { "char": "H", "index": 4 },
+];
+
+const height = 17;
+const width = 15;
+const lineWidth = 2;
+const blockSize = 20;
+const itemLineWidth = 4;
+const itemBlockSize = 40;
+
+function structuredClone(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
 
 const EditMap = () => {
-    const height = 17;
-    const width = 15;
-    const lineWidth = 2;
-    const blockSize = 20;
-    const itemLineWidth = 4;
-    const itemBlockSize = 40;
-
-    const items = useMemo(() => [
-        {"char": ".", "index": 0},
-        {"char": "2", "index": 1},
-        {"char": "3", "index": 2},
-        {"char": "C", "index": 3},
-        {"char": "H", "index": 4},
-    ], []);
-
-    let defaultField = [];
-    for(let i = 0; i < height; i++) defaultField.push(Array(width).fill('0'));
-    const [field, setField] = useState(defaultField);
+    const [field, setField] = useState(() => {
+        const defaultField = [];
+        for (let i = 0; i < height; i++) {
+            defaultField.push(Array(width).fill('0'));
+        }
+        defaultField[0][0] = "C";
+        defaultField[height - 1][width - 1] = "H";
+        return defaultField;
+    });
     const [selectedItem, setSelectedItem] = useState(0);
-
-    const handleItemClicked = useCallback((ev) => {
-
-        const rect = ev.target.getBoundingClientRect();
-        let x = ev.x - rect.left;
-        let slct = Math.floor(x / (itemBlockSize + itemLineWidth));
-        if(0 <= slct && slct < 5) setSelectedItem(slct);
-    }, []);
-
-    const handleFieldClicked = useCallback((ev) => {
-        const rect = ev.target.getBoundingClientRect();
-        let x = ev.x - rect.left;
-        let y = ev.y - rect.top;
-        let slctx = Math.floor(x / (blockSize + lineWidth));
-        let slcty = Math.floor(y / (blockSize + lineWidth));
-        if(0 <= slctx && slctx < width && 0 <= slcty && slcty < height) {
-            let newField = field;
-            newField[slcty][slctx] = items[selectedItem].char;
-            setField(newField);
-            }
-        console.log(field);
-    }, [selectedItem, field, items]);
-            
-    useEffect(() => {
-        const canvasElem = document.getElementById("canvas");
-        canvasElem.addEventListener('click', handleFieldClicked);
-        const canvasElem2 = document.getElementById("items");
-        canvasElem2.addEventListener('click', handleItemClicked);
-    }, [handleItemClicked, handleFieldClicked]);
 
     useEffect(() => {
         const canvasElem = document.getElementById("items");
         const ctx = canvasElem.getContext("2d");
-        
-        fieldDraw(ctx, 1, items.length, [["0", "2", "3", "C", "H"]], 40, 4);
+        fieldDraw(ctx, 1, items.length, [["0", "2", "3", "C", "H"]], itemBlockSize, itemLineWidth);
 
         ctx.strokeStyle = "#ff0000"; //選択されたアイテムを赤枠で囲う
         ctx.lineWidth = itemLineWidth;
         ctx.beginPath();
-        console.log(selectedItem);
         ctx.moveTo((itemLineWidth + itemBlockSize) * selectedItem, 0);
         ctx.lineTo((itemLineWidth + itemBlockSize) * (selectedItem + 1) + itemLineWidth, 0);
         ctx.lineTo((itemLineWidth + itemBlockSize) * (selectedItem + 1) + itemLineWidth, itemLineWidth * 2 + itemBlockSize);
@@ -71,7 +48,7 @@ const EditMap = () => {
         ctx.closePath();
         ctx.stroke();
 
-    }, [selectedItem, items]);
+    }, [selectedItem]);
 
     useEffect(() => {
         const canvasElem = document.getElementById("canvas");
@@ -79,11 +56,54 @@ const EditMap = () => {
         fieldDraw(ctx, height, width, field);
     }, [field]);
 
+    const handleItemClicked = (ev) => {
+        const rect = ev.target.getBoundingClientRect();
+        let x = ev.clientX - rect.left;
+        let slct = Math.floor(x / (itemBlockSize + itemLineWidth));
+        if (0 <= slct && slct < items.length) setSelectedItem(slct);
+    };
+
+    const handleFieldClicked = (ev) => {
+        const rect = ev.target.getBoundingClientRect();
+        let x = ev.clientX - rect.left;
+        let y = ev.clientY - rect.top;
+        let slctx = Math.floor(x / (blockSize + lineWidth));
+        let slcty = Math.floor(y / (blockSize + lineWidth));
+        if (0 <= slctx && slctx < width && 0 <= slcty && slcty < height) {
+            let newField = structuredClone(field);
+            if(selectedItem === 3 || selectedItem === 4) { //CかHを置くとき
+                for(let i = 0; i < height; i++) {
+                    for(let j = 0; j < width; j++) {
+                        if(newField[i][j] === "H" || newField[i][j] === "C") newField[i][j] = "0";
+                    }
+                }
+                if(selectedItem === 3) {
+                    newField[slcty][slctx] = "C";
+                    newField[height - slcty - 1][width - slctx - 1] = "H";
+                } else {
+                    newField[slcty][slctx] = "H";
+                    newField[height - slcty - 1][width - slctx - 1] = "C";
+                }
+            } else {
+                if(newField[slcty][slctx] === "C" || newField[slcty][slctx] === "H") return;
+                newField[slcty][slctx] = items[selectedItem].char;
+                newField[height - slcty - 1][width - slctx - 1] = items[selectedItem].char;
+            }
+            setField(newField);
+        }
+    };
+
+    const handleExport = (ev) => {
+        let content = field.map((row) => row.join(""));
+        console.log(content);
+    }
+
     return (
         <div className="container">
             <h1 className="heading">盤面編集</h1>
-            <canvas width={items.length * (itemLineWidth + itemBlockSize) + itemLineWidth} height={itemLineWidth * 2 + itemBlockSize} id="items"></canvas>
-            <canvas width={width * (lineWidth + blockSize) + lineWidth} height={height * (lineWidth + blockSize) + lineWidth} id="canvas"></canvas>
+            <canvas onClick={handleItemClicked} width={items.length * (itemLineWidth + itemBlockSize) + itemLineWidth} height={itemLineWidth * 2 + itemBlockSize} id="items"></canvas>
+            <canvas onClick={handleFieldClicked} width={width * (lineWidth + blockSize) + lineWidth} height={height * (lineWidth + blockSize) + lineWidth} id="canvas"></canvas>
+            <button id="export" href="#" download="map.txt" onClick={handleExport}>ファイル出力</button>
         </div>
     );
 }
