@@ -49,7 +49,7 @@ import { useNavigate, useParams} from 'react-router-dom';
         };
 
          try {
-            const response = await fetch('http://13.113.190.140/battle', {
+            const response = await fetch('https://6vlokmaex5npaejbf2mser3g4a0teifv.lambda-url.ap-northeast-1.on.aws/', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json" 
@@ -66,8 +66,6 @@ import { useNavigate, useParams} from 'react-router-dom';
                 ...receiveData,
                 ...boardData
             }
-            console.log('mergedData: ')
-            console.log(mergedData)
             const encodedData = encodeURIComponent(JSON.stringify(mergedData));
             navigate(`/match/${encodedData}`)
           } catch (error) {
