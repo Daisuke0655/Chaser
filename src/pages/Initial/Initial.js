@@ -1,6 +1,6 @@
   import React, { useState, useRef } from "react";
   import './Initial.css';
-  import { useNavigate } from 'react-router-dom';
+  import { useNavigate,useParams} from 'react-router-dom';
   
 
   const initialState={
@@ -9,6 +9,7 @@
 
   function Initial() {
     const navigate = useNavigate()
+    const {userId} = useParams()
 
     const inputRef = useRef(null);
     const [formState,setFormState] = useState(initialState)
@@ -43,7 +44,7 @@
     }
 
     const onClickGameButton = () => {
-      navigate('/select')
+      navigate(`/select/${userId}`)
     }
 
     const onClickFileButton = () => {
@@ -53,7 +54,7 @@
     };
 
     const onClickEditScriptButton = () =>{
-      navigate('/edit')
+      navigate(`/edit/${userId}`)
     }
 
     const onClickLogButton = () => {
@@ -69,23 +70,6 @@
         <div className="button-box">
         <button className="button-style" onClick={onClickEditScriptButton}>ファイルを編集</button>
         </div>
-        {
-        //後で多分消す
-        /* <div className="button-box">
-          <button className="button-style" onClick={onClickLogButton}>ログを見る</button>
-        </div>
-        <div className="button-box">
-          <button className="button-style">トーナメントに参加</button>
-        </div>
-        <div className="button-box">
-          <button className="button-style" onClick={onClickFileButton}>ファイルをアップロード</button>
-          <input 
-            hidden
-            ref={inputRef}
-            type="file"
-            accept=".py"
-            onChange={onFileInputChange}/>  
-        </div> */}
       </div>
     );
   }
