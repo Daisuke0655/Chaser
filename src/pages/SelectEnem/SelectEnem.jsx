@@ -49,7 +49,7 @@ import { useNavigate, useParams} from 'react-router-dom';
         };
 
          try {
-            const response = await fetch('http://3.112.173.245/battle', {
+            const response = await fetch('http://13.113.190.140/battle', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json" 
