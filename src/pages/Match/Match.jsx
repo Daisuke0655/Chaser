@@ -1,5 +1,5 @@
 import postMatchLog from "../../components/postMatchLog";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import './Match.css';
 import fieldDraw from "../../components/fieldDraw";
@@ -20,21 +20,21 @@ const Match = () => {
     const [turnNum, setTurnNum] = useState(0);
     const [matchLog, setMatchLog] = useState(null);
     const [fields, setFields] = useState([]);
-    const { jsonData } = useParams();    
+    const { jsonData } = useParams();
 
     useEffect(() => {
         const fetchData = async () => {
-            try{
+            try {
                 const log = JSON.parse(jsonData);
-                setMatchLog(log)
-            }catch(error){
-                console.error('JSONパース中にエラー発生:',error)
+                setMatchLog(log);
+            } catch (error) {
+                console.error('JSONパース中にエラー発生:', error);
             }
         };
-        if(jsonData){
+        if (jsonData) {
             fetchData();
         }
-}, []);
+    }, [jsonData]);
 
     useEffect(() => {
         if (matchLog) {
@@ -54,16 +54,19 @@ const Match = () => {
                 }
             }
 
-            // let currentField = matchLog.Field.map((row) => row.split(""));
             let currentField = [];
-            if(matchLog && matchLog.Field){
+            if (matchLog && matchLog.Field) {
                 matchLog.Field.forEach(row => {
                     currentField.push(row.split(""));
-                })
+                });
             }
             newFields.push(structuredClone(currentField));
 
             matchLog.log.forEach(act => {
+                if (!act[1] || !dir[act[1]]) {
+                    console.error('Invalid action or direction:', act);
+                    return; // 無効なアクションの場合はスキップ
+                }
                 const turn = newFields.length;
                 let px, py;
                 if (turn % 2) { // Cold
@@ -73,17 +76,21 @@ const Match = () => {
                     px = hotPos.x + dir[act[1]].x;
                     py = hotPos.y + dir[act[1]].y;
                 }
+                if (px < 0 || px >= height || py < 0 || py >= width) {
+                    console.error('Position out of bounds:', { px, py });
+                    return; // 無効な位置の場合はスキップ
+                }
                 if (act[0] === 'p') {
                     currentField[px][py] = "2";
                 } else if (act[0] === 'w') {
                     if (turn % 2) {
-                        if(currentField[px][py] === "3") currentField[coldPos.x][coldPos.y] = "2";
+                        if (currentField[px][py] === "3") currentField[coldPos.x][coldPos.y] = "2";
                         else currentField[coldPos.x][coldPos.y] = "0";
                         coldPos.x = px;
                         coldPos.y = py;
                         currentField[coldPos.x][coldPos.y] = "C";
                     } else {
-                        if(currentField[px][py] === "3") currentField[hotPos.x][hotPos.y] = "2";
+                        if (currentField[px][py] === "3") currentField[hotPos.x][hotPos.y] = "2";
                         else currentField[hotPos.x][hotPos.y] = "0";
                         hotPos.x = px;
                         hotPos.y = py;
@@ -109,11 +116,7 @@ const Match = () => {
             const canvasElem = document.getElementById("canvas");
             const ctx = canvasElem.getContext("2d");
 
-            fieldDraw(ctx, height, width, fields[turnNum])
-            
-            if(turnNum % 2) {
-
-            }
+            fieldDraw(ctx, height, width, fields[turnNum]);
         }
     }, [turnNum, fields]);
 
@@ -126,7 +129,7 @@ const Match = () => {
             <h1 className="heading">試合結果</h1>
             <button onClick={previousTurn} className={`button ${turnNum <= 0 ? "button-disable" : ""}`}>前ターン</button>
             <button onClick={nextTurn} className="button">次ターン</button>
-            <div>{turnNum+1}ターン目</div>
+            <div>{turnNum + 1}ターン目</div>
             <canvas width={width * (lineWidth + blockSize) + lineWidth} height={height * (lineWidth + blockSize) + lineWidth} id="canvas"></canvas>
         </div>
     );
