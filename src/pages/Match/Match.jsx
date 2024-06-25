@@ -1,10 +1,9 @@
 import postMatchLog from "../../components/postMatchLog";
 import React, { useState, useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
 import './Match.css';
 import fieldDraw from "../../components/fieldDraw";
 
-const Match = () => {
+const Match = ({data}) => {
     const height = 17;
     const width = 15;
     const lineWidth = 2;
@@ -20,18 +19,17 @@ const Match = () => {
     const [turnNum, setTurnNum] = useState(0);
     const [matchLog, setMatchLog] = useState(null);
     const [fields, setFields] = useState([]);
-    const { jsonData } = useParams();    
 
     useEffect(() => {
         const fetchData = async () => {
             try{
-                const log = JSON.parse(jsonData);
+                const log = data
                 setMatchLog(log)
             }catch(error){
                 console.error('JSONパース中にエラー発生:',error)
             }
         };
-        if(jsonData){
+        if(data){
             fetchData();
         }
 }, []);

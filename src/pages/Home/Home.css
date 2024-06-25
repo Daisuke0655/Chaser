@@ -1,0 +1,10 @@
+.home-style {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+}
+
+.match-container-style{
+    flex-direction: column;
+    height: 70vh;
+}

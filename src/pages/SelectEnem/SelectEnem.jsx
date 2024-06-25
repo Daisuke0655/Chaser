@@ -1,10 +1,9 @@
 import React, { useState, } from "react";
 import './SelectEnem.css';
-import { useNavigate, useParams} from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import EditMap from "../EditMap/EditMap";
 
-  function SelectEnem() {
-    const {userId} = useParams()
+  function SelectEnem ({userId,onSetMatch,onSetData}) {
     const [nameHot,setNameHot]=useState(userId)
     const [nameCool,setNameCool]=useState(userId)
     const [slotHot,setSlotHot]=useState(0)
@@ -68,7 +67,8 @@ import EditMap from "../EditMap/EditMap";
                 ...boardData
             }
             const encodedData = encodeURIComponent(JSON.stringify(mergedData));
-            navigate(`/match/${encodedData}`)
+            onSetData(mergedData)
+            onSetMatch(true)
           } catch (error) {
             console.error(error);
           }

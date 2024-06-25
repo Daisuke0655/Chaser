@@ -1,5 +1,4 @@
 .upload-button{
-    position: fixed;
     bottom: 50px;
     right: 55px;
     padding: 10px;
@@ -11,7 +10,6 @@
 }
 
 .import-button{
-    position: fixed;
     top: 50px;
     right: 50px;
     padding: 14px;
@@ -26,6 +24,7 @@
     position: fixed;
     top: 50%;
     left: 50%;
+    z-index: 100;
     transform: translate(-50%, -50%);
     background-color: #fff;
     padding: 20px;
@@ -46,3 +45,8 @@
 .slot_send_button:hover {
     background-color: var(--button-widget-hover-color);
   }
+
+.monaco-style{
+    display: flex;
+    align-items: center;
+}
