@@ -1,5 +1,5 @@
 import postMatchLog from "../../components/postMatchLog";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect, useRef} from "react";
 import { useParams } from "react-router-dom";
 import './Match.css';
 import fieldDraw from "../../components/fieldDraw";
@@ -20,6 +20,8 @@ const Match = () => {
     const [turnNum, setTurnNum] = useState(0);
     const [matchLog, setMatchLog] = useState(null);
     const [fields, setFields] = useState([]);
+    const [Auto,setAuto]=useState(false);
+    const intervalRef = useRef(null);
     const { jsonData } = useParams();
 
     useEffect(() => {
@@ -103,12 +105,23 @@ const Match = () => {
         }
     }, [matchLog]);
 
+    useEffect(() => {
+        if (Auto!==false) {
+            intervalRef.current = setInterval(()=>{if (turnNum < fields.length - 1){setTurnNum(turnNum + 1);console.log("auto turn")};}, 1000);
+        }
+        return () => clearInterval(intervalRef.current);
+    }, [turnNum,Auto]);
+
+    const checkAuto=()=>{
+        setAuto(!Auto)
+    }
+
     const previousTurn = () => {
         if (turnNum > 0) setTurnNum(turnNum - 1);
     };
 
     const nextTurn = () => {
-        if (turnNum < fields.length - 1) setTurnNum(turnNum + 1);
+        if (turnNum < fields.length - 1)setTurnNum(turnNum + 1);
     };
 
     useEffect(() => {
@@ -127,6 +140,7 @@ const Match = () => {
     return (
         <div className="container">
             <h1 className="heading">試合結果</h1>
+            <label>Auto<input type="checkbox" value="AUTO" onChange={checkAuto} checked={Auto}/></label>
             <button onClick={previousTurn} className={`button ${turnNum <= 0 ? "button-disable" : ""}`}>前ターン</button>
             <button onClick={nextTurn} className="button">次ターン</button>
             <div>{turnNum + 1}ターン目</div>
