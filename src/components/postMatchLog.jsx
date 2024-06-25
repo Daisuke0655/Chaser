@@ -1,30 +1,30 @@
-import React from "react"
+import React from "react";
 
 const postMatchLog = async (Logid) => {
-    var res;
-    await fetch("https://hdtym70xm0.execute-api.ap-northeast-1.amazonaws.com/CHaserAPI/FetchGameLog", 
-        {
-            method: 'POST',
+  var res;
+  await fetch(
+    "https://hdtym70xm0.execute-api.ap-northeast-1.amazonaws.com/CHaserAPI/FetchGameLog",
+    {
+      method: "POST",
 
-            mode: 'cors',
+      mode: "cors",
 
-            headers: {
-                "Content-Type": "application/json" 
-            },
-            body:JSON.stringify({LogID: Logid})
-
-        }
-    )
-    .then(response => response.json())
-    .then(data => {
-        // console.log(data.body)
-        res = data.body
-        return res
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ LogID: Logid }),
+    },
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      // console.log(data.body)
+      res = data.body;
+      return res;
     })
     .catch((error) => {
-        console.error("Error:", error)
+      console.error("Error:", error);
     });
-    return res
-}
+  return res;
+};
 
 export default postMatchLog;

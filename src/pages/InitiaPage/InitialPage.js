@@ -1,4 +1,4 @@
-import './InitialPage.css';
+import "./InitialPage.css";
 
 function InitialPage() {
   return (
@@ -12,4 +12,4 @@ function InitialPage() {
   );
 }
 
-export default InitialPage
+export default InitialPage;
