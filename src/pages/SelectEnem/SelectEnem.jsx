@@ -77,7 +77,7 @@ function SelectEnem() {
           },
           body: JSON.stringify(sendData),
           mode: "cors",
-        },
+        }
       );
       const receiveData = await response.json();
       const boardData = {
@@ -118,83 +118,57 @@ function SelectEnem() {
     navigate(`/initial/${userId}`);
   };
 
+  const slotSelectors = (HorC) => {
+    const slotArray = [];
+    for (let i = 0; i < 3; i++) {
+      slotArray.push(
+        <div className="program_items">
+          <button
+            className={`program_buttons_${HorC}`}
+            onClick={() => onClickSlotButton(i, HorC)}
+          >
+            スロット{i + 1}
+          </button>
+        </div>
+      );
+    }
+    return slotArray;
+  };
+
+  const playerNameInput = (HorC) => {
+    const placeHolder =
+      HorC === "C" ? "COOLプレイヤー名を入力" : "HOTプレイヤー名を入力";
+    const onChangeName = (e) =>
+      HorC === "C" ? setNameCool(e.target.value) : setNameHot(e.target.value);
+    return (
+      <input
+        className="player_name_input"
+        value={nameCool}
+        placeholder={placeHolder}
+        onChange={onChangeName}
+        type="text"
+      />
+    );
+  };
+
   return (
     <>
       <div className="selectEnem">
-        <div className="search">
-          <input
-            className="search_bar_input"
-            value={nameHot}
-            placeholder="HOTプレイヤー名を入力"
-            onChange={(e) => setNameHot(e.target.value)}
-            type="text"
-          />
-        </div>
-        <div className="program_Container">
-          <div className="program_items">
-            <button
-              className="program_buttons_hot"
-              onClick={() => onClickSlotButton(0, "H")}
-            >
-              スロット１
-            </button>
+        <div className="player_settings">
+          <div className="player_name_input_container">
+            {playerNameInput("H")}
           </div>
-          <div className="program_items">
-            <button
-              className="program_buttons_hot"
-              onClick={() => onClickSlotButton(1, "H")}
-            >
-              スロット２
-            </button>
-          </div>
-          <div className="program_items">
-            <button
-              className="program_buttons_hot"
-              onClick={() => onClickSlotButton(2, "H")}
-            >
-              スロット３
-            </button>
-          </div>
-        </div>
-        <div>{"選択中 name:" + nameHot + " slot:" + slotHot}</div>
+          <div className="program_Container">{slotSelectors("H")}</div>
+          <div>{"選択中 name:" + nameHot + " slot:" + slotHot}</div>
 
-        <div className="search">
-          <input
-            className="search_bar_input"
-            value={nameCool}
-            placeholder="COOLプレイヤー名を入力"
-            onChange={(e) => setNameCool(e.target.value)}
-            type="text"
-          />
+          <div className="player_name_input_container">
+            {playerNameInput("C")}
+          </div>
+          <div className="program_Container">{slotSelectors("C")}</div>
+
+          <div>{"選択中 name:" + nameCool + " slot:" + slotCool}</div>
         </div>
-        <div className="program_Container">
-          <div className="program_items">
-            <button
-              className="program_buttons_cool"
-              onClick={() => onClickSlotButton(0, "C")}
-            >
-              スロット１
-            </button>
-          </div>
-          <div className="program_items">
-            <button
-              className="program_buttons_cool"
-              onClick={() => onClickSlotButton(1, "C")}
-            >
-              スロット２
-            </button>
-          </div>
-          <div className="program_items">
-            <button
-              className="program_buttons_cool"
-              onClick={() => onClickSlotButton(2, "C")}
-            >
-              スロット３
-            </button>
-          </div>
-        </div>
-        <div>{"選択中 name:" + nameCool + " slot:" + slotCool}</div>
-        <div className="search">
+        <div className="tern_select">
           <label htmlFor="turn">ターン数</label>
           <input
             value={turn}
