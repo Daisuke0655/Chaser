@@ -9,8 +9,8 @@
   margin: 10px 40px;
   padding: 10px 20px;
   font-size: 20px;
-  color: #fff;
-  background-color: #61dafb;
+  color: var(--light-text-color);
+  background-color: var(--button-widget-color);
   border: 0;
   border-radius: 5px;
   cursor: pointer;
@@ -18,5 +18,5 @@
 }
 
 .button-style:hover {
-  background-color: #0d8fbd;
+  background-color: var(--button-widget-hover-color);
 }

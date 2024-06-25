@@ -25,6 +25,17 @@
   --neutral-800: #444a4b;
   --neutral-900: #222626;
 
+  /* WARN */
+  --warn-100: #fff2f2;
+  --warn-200: #ffcccc;
+  --warn-300: #ff9999;
+  --warn-400: #ff6666;
+  --warn-500: #ff3333;
+  --warn-600: #cc0000;
+  --warn-700: #990000;
+  --warn-800: #660000;
+  --warn-900: #330000;
+
   /* HOT */
   --hot-100: #fff5f2;
   --hot-200: #ffcdc2;
@@ -47,19 +58,10 @@
   --cool-800: #0a185c;
   --cool-900: #040c26;
 
-  --button-widget-color: var(--hot-500);
-  --button-widget-hover-color: var(--primary-700);
-  --light-text-color: #fff;
-  --dark-text-color: #333;
-}
-
-@media screen and (prefers-color-scheme: dark) {
-  :root {
-    --button-widget-color: #61dafb;
-    --button-widget-hover-color: #0d8fbd;
-    --light-text-color: #fff;
-    --dark-text-color: #ccc;
-  }
+  --button-widget-color: var(--primary-500);
+  --button-widget-hover-color: var(--primary-600);
+  --light-text-color: var(--neutral-100);
+  --dark-text-color: var(--neutral-900);
 }
 
 /* .App-logo {
