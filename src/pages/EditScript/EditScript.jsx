@@ -2,18 +2,17 @@ import React, { useState, useRef} from 'react';
 import { Editor } from '@monaco-editor/react';
 import { MdFileUpload   } from "react-icons/md";
 import { FaFileImport } from "react-icons/fa";
-import { useNavigate,useParams} from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 
 import './EditScript.css'
 
-const EditScript = () => {
+const EditScript = ({userId}) => {
 
   const editorRef = useRef(null);
   const fileInputRef = useRef(null);
   const [fileName,setFileName] = useState('')
   const [isPopUpVisible,setPopUpVisible] = useState(false)
   const navigate = useNavigate()
-  const {userId} = useParams()
 
   function handleEditorDidMount(editor,monaco){
     editorRef.current = editor
@@ -57,7 +56,7 @@ const EditScript = () => {
     });
     if (response.ok) {
       console.log('File uploaded successfully');
-      navigate(`/initial/${userId}`)
+      // navigate(`/initial/${userId}`)
     } else {
       console.error('File upload failed');
     }

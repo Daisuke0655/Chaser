@@ -29,7 +29,7 @@ const Login = () => {
     if(Object.keys(newErrors).length === 0){
       const result = await postUserData(formData)
       if(result){
-        navigate(`/initial/${formData.name}`) 
+        navigate(`/home/${formData.name}`) 
       }
       else{
         setFormData({ name: '', password: ''})

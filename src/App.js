@@ -7,6 +7,7 @@ import Log from "./pages/Log/Log"
 import Match from './pages/Match/Match'
 import SelectEnem from './pages/SelectEnem/SelectEnem'
 import EditScript from "./pages/EditScript/EditScript"
+import Home from "./pages/Home/Home";
 
 
 const App = () =>{
@@ -15,11 +16,12 @@ const App = () =>{
             <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login />}></Route>
-                <Route path="/initial/:userId" element={<InitialPage />}></Route>
+                <Route path="/initial" element={<InitialPage />}></Route>
                 <Route path="/log" element = {<Log />}></Route>
-                <Route path="/edit/:userId" element = {<EditScript />}></Route>
-                <Route path="/select/:userId" element = {<SelectEnem/>}></Route>
+                <Route path="/edit" element = {<EditScript />}></Route>
+                <Route path="/select" element = {<SelectEnem/>}></Route>
                 <Route path="/match/:jsonData" element = {<Match/>}></Route>
+                <Route path="/home/:userId"element = {<Home/>}></Route>
             </Routes>
             </BrowserRouter>
         </div>
