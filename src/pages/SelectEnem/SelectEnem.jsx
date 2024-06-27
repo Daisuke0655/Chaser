@@ -75,12 +75,6 @@ import EditMap from "../EditMap/EditMap";
           }
     
            console.log("complete start")
-=======
-import React, { useState } from "react";
-import "./SelectEnem.css";
-import { useNavigate, useParams } from "react-router-dom";
-import EditMap from "../EditMap/EditMap";
-
 
   const onClickStartButton = async () => {
     if (!nameHot) {
