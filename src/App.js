@@ -1,6 +1,6 @@
 import React from "react";
-import './App.css'
-import { BrowserRouter, Routes, Route} from "react-router-dom";
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import InitialPage from "./pages/Initial/Initial";
 import Login from "./pages/Login/Login";
 import Log from "./pages/Log/Log"
@@ -8,7 +8,6 @@ import Match from './pages/Match/Match'
 import SelectEnem from './pages/SelectEnem/SelectEnem'
 import EditScript from "./pages/EditScript/EditScript"
 import Home from "./pages/Home/Home";
-
 
 const App = () =>{
     return(
