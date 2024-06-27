@@ -19,7 +19,7 @@ const App = () =>{
                 <Route path="/log" element = {<Log />}></Route>
                 <Route path="/edit" element = {<EditScript />}></Route>
                 <Route path="/select" element = {<SelectEnem/>}></Route>
-                <Route path="/match/:jsonData" element = {<Match/>}></Route>
+                <Route path="/match" element = {<Match/>}></Route>
                 <Route path="/home/:userId"element = {<Home/>}></Route>
             </Routes>
             </BrowserRouter>
