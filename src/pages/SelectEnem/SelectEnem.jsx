@@ -30,52 +30,7 @@ import EditMap from "../EditMap/EditMap";
         '0000000000000H0',
         '000003000003000'
     ]);    
-    
-    const onClickStartButton = async() => {
-        if(!nameHot){console.log("!nameHot");return}
-        if(!nameCool){console.log("!nameCool");return}
-        if(slotHot<0){console.log("!slotHot");return}
-        if(slotCool<0){console.log("!slotCool");return}
-        if(!board){console.log("!board");return}
-        if(turn<1){console.log("!turn");return}
-
-        const sendData = {
-            "c_id": nameCool,
-            "c_slot": slotCool,
-            "h_id": nameHot,
-            "h_slot": slotHot,
-            "board": board,
-            "turn": Number(turn)
-        };
-
-         try {
-            const response = await fetch('https://6vlokmaex5npaejbf2mser3g4a0teifv.lambda-url.ap-northeast-1.on.aws/', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json" 
-            },
-            body: JSON.stringify(sendData),
-            mode: 'cors'
-          });
-            const receiveData = await response.json();
-            const boardData = {
-                Field: board,
-                Turn: turn
-            }
-            const mergedData = {
-                ...receiveData,
-                ...boardData
-            }
-            const encodedData = encodeURIComponent(JSON.stringify(mergedData));
-            onSetData(mergedData)
-            onSetMatch(true)
-            scrollToBottom()
-          } catch (error) {
-            console.error(error);
-          }
-    
-           console.log("complete start")
-
+  
   const onClickStartButton = async () => {
     if (!nameHot) {
       console.log("!nameHot");
