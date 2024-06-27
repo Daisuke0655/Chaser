@@ -3,8 +3,18 @@
     height: 100vh;
     align-items: center;
 }
+.match-container {
+    max-height: 500px; /* コンテナの最大高さを設定（必要に応じて調整） */
+    overflow-y: auto; /* 縦方向にスクロール可能にする */
+    width: 50%;
+  }
+  
+.match-container-style {
+    overflow-y: hidden; /* 縦方向のオーバーフローを制御 */
+    max-height: 1200px; /* 初期状態では高さを0に設定 */
+}
 
-.match-container-style{
-    flex-direction: column;
-    height: 70vh;
+.edit-container{
+    width: 50%;
+    height: auto;
 }

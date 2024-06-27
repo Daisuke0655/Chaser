@@ -3,7 +3,7 @@ import './SelectEnem.css';
 import { useNavigate} from 'react-router-dom';
 import EditMap from "../EditMap/EditMap";
 
-  function SelectEnem ({userId,onSetMatch,onSetData}) {
+  function SelectEnem ({userId,onSetMatch,onSetData,scrollToBottom}) {
     const [nameHot,setNameHot]=useState(userId)
     const [nameCool,setNameCool]=useState(userId)
     const [slotHot,setSlotHot]=useState(0)
@@ -69,6 +69,7 @@ import EditMap from "../EditMap/EditMap";
             const encodedData = encodeURIComponent(JSON.stringify(mergedData));
             onSetData(mergedData)
             onSetMatch(true)
+            scrollToBottom()
           } catch (error) {
             console.error(error);
           }
