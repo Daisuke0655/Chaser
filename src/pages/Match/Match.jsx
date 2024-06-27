@@ -32,7 +32,7 @@ const Match = ({data}) => {
         if(data){
           fetchData();
     }
-  }, [jsonData]);
+  }, []);
 
   useEffect(() => {
     if (matchLog) {
