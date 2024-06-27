@@ -1,0 +1,123 @@
+.field_cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary-100);
+  aspect-ratio: 1/1;
+  border: 1px solid var(--primary-200);
+  transition: background-color 0.3s ease;
+}
+
+@keyframes moveFromRight {
+  0% {
+    transform: translate(100%, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes moveFromLeft {
+  0% {
+    transform: translate(-100%, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes moveFromUp {
+  0% {
+    transform: translate(0, -100%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@keyframes moveFromDown {
+  0% {
+    transform: translate(0, 100%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.moved_up {
+  &::after {
+    content: "↑";
+  }
+}
+.moved_down {
+  &::after {
+    content: "↓";
+  }
+}
+.moved_right {
+  &::after {
+    content: "→";
+  }
+}
+.moved_left {
+  &::after {
+    content: "←";
+  }
+}
+
+.field_cell:hover {
+  background-color: var(--primary-200);
+}
+
+.field_cell_empty {
+  background-color: var(--primary-100);
+}
+.field_cell_empty:hover {
+  background-color: var(--primary-200);
+}
+
+.field_cell_cool {
+  background-color: var(--cool-500);
+}
+.field_cell_cool:hover {
+  background-color: var(--cool-600);
+}
+
+.field_cell_hot {
+  background-color: var(--hot-500);
+}
+.field_cell_hot:hover {
+  background-color: var(--hot-600);
+}
+
+.field_cell_hot::after {
+  content: "H";
+  font-size: 0.8em;
+  color: var(--light-text-color);
+}
+.field_cell_cool::after {
+  content: "C";
+  font-size: 0.8em;
+  color: var(--light-text-color);
+}
+
+.field_cell_wall {
+  background-color: var(--neutral-900);
+}
+.field_cell_wall:hover {
+  background-color: var(--neutral-800);
+}
+
+.field_cell_item {
+  background-color: var(--primary-300);
+}
+.field_cell_item:hover {
+  background-color: var(--primary-400);
+}
+
+.field {
+  display: grid;
+  max-width: 100dvw;
+  max-height: 100dvh;
+  height: 100%;
+  width: 100%;
+  aspect-ratio: 1;
+  background-color: var(--primary-100);
+}

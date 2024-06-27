@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./Match.css";
 import fieldDraw from "../../components/fieldDraw";
+import FieldDrawByJsx from "../../components/fieldDrawByJsx";
 
 const Match = () => {
   const height = 17;
@@ -104,6 +105,7 @@ const Match = () => {
         }
         newFields.push(structuredClone(currentField));
       });
+      console.log(structuredClone(newFields));
       setFields(structuredClone(newFields));
     }
   }, [matchLog]);
@@ -115,15 +117,6 @@ const Match = () => {
   const nextTurn = () => {
     if (turnNum < fields.length - 1) setTurnNum(turnNum + 1);
   };
-
-  useEffect(() => {
-    if (fields.length > 0) {
-      const canvasElem = document.getElementById("canvas");
-      const ctx = canvasElem.getContext("2d");
-
-      fieldDraw(ctx, height, width, fields[turnNum]);
-    }
-  }, [turnNum, fields]);
 
   if (!matchLog) {
     return <div>Loading...</div>;
@@ -142,11 +135,15 @@ const Match = () => {
         次ターン
       </button>
       <div>{turnNum + 1}ターン目</div>
-      <canvas
-        width={width * (lineWidth + blockSize) + lineWidth}
-        height={height * (lineWidth + blockSize) + lineWidth}
-        id="canvas"
-      ></canvas>
+
+      <div className="field-container">
+        <FieldDrawByJsx
+          fields={fields}
+          turnNum={turnNum}
+          height={height}
+          width={width}
+        />
+      </div>
     </div>
   );
 };

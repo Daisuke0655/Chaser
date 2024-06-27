@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./EditMap.css";
 import fieldDraw from "../../components/fieldDraw"; // fieldDrawメソッドの実装を確認してください
+import FieldDrawByJsx from "../../components/fieldDrawByJsx"; // FieldDrawByJsxコンポーネントの実装を確認してください
 
 const items = [
   { char: ".", index: 0 },
@@ -65,7 +66,7 @@ const EditMap = ({ onClose, onSave }) => {
       items.length,
       [["0", "2", "3", "C", "H"]],
       itemBlockSize,
-      itemLineWidth,
+      itemLineWidth
     );
 
     ctx.strokeStyle = "#ff0000"; //選択されたアイテムを赤枠で囲う
@@ -74,25 +75,25 @@ const EditMap = ({ onClose, onSave }) => {
     ctx.moveTo((itemLineWidth + itemBlockSize) * selectedItem, 0);
     ctx.lineTo(
       (itemLineWidth + itemBlockSize) * (selectedItem + 1) + itemLineWidth,
-      0,
+      0
     );
     ctx.lineTo(
       (itemLineWidth + itemBlockSize) * (selectedItem + 1) + itemLineWidth,
-      itemLineWidth * 2 + itemBlockSize,
+      itemLineWidth * 2 + itemBlockSize
     );
     ctx.lineTo(
       (itemLineWidth + itemBlockSize) * selectedItem,
-      itemLineWidth * 2 + itemBlockSize,
+      itemLineWidth * 2 + itemBlockSize
     );
     ctx.closePath();
     ctx.stroke();
   }, [selectedItem]);
 
-  useEffect(() => {
-    const canvasElem = document.getElementById("canvas");
-    const ctx = canvasElem.getContext("2d");
-    fieldDraw(ctx, height, width, field);
-  }, [field]);
+  // useEffect(() => {
+  //   const canvasElem = document.getElementById("canvas");
+  //   const ctx = canvasElem.getContext("2d");
+  //   fieldDraw(ctx, height, width, field);
+  // }, [field]);
 
   const handleItemClicked = (ev) => {
     const rect = ev.target.getBoundingClientRect();
@@ -107,6 +108,36 @@ const EditMap = ({ onClose, onSave }) => {
     let y = ev.clientY - rect.top;
     let slctx = Math.floor(x / (blockSize + lineWidth));
     let slcty = Math.floor(y / (blockSize + lineWidth));
+    if (0 <= slctx && slctx < width && 0 <= slcty && slcty < height) {
+      let newField = structuredClone(field);
+      if (selectedItem === 3 || selectedItem === 4) {
+        //CかHを置くとき
+        for (let i = 0; i < height; i++) {
+          for (let j = 0; j < width; j++) {
+            if (newField[i][j] === "H" || newField[i][j] === "C")
+              newField[i][j] = "0";
+          }
+        }
+        if (selectedItem === 3) {
+          newField[slcty][slctx] = "C";
+          newField[height - slcty - 1][width - slctx - 1] = "H";
+        } else {
+          newField[slcty][slctx] = "H";
+          newField[height - slcty - 1][width - slctx - 1] = "C";
+        }
+      } else {
+        if (newField[slcty][slctx] === "C" || newField[slcty][slctx] === "H")
+          return;
+        newField[slcty][slctx] = items[selectedItem].char;
+        newField[height - slcty - 1][width - slctx - 1] =
+          items[selectedItem].char;
+      }
+      setField(newField);
+    }
+  };
+  const handleFieldClickedJsxVer = (position) => {
+    let slctx = position.x;
+    let slcty = position.y;
     if (0 <= slctx && slctx < width && 0 <= slcty && slcty < height) {
       let newField = structuredClone(field);
       if (selectedItem === 3 || selectedItem === 4) {
@@ -150,12 +181,17 @@ const EditMap = ({ onClose, onSave }) => {
         height={itemLineWidth * 2 + itemBlockSize}
         id="items"
       ></canvas>
-      <canvas
+      {/* <canvas
         onClick={handleFieldClicked}
         width={width * (lineWidth + blockSize) + lineWidth}
         height={height * (lineWidth + blockSize) + lineWidth}
         id="canvas"
-      ></canvas>
+      ></canvas> */}
+      <FieldDrawByJsx
+        fields={[field]}
+        turnNum={0}
+        onClick={handleFieldClickedJsxVer}
+      />
       <br></br>
       <button id="export" onClick={handleExport}>
         保存
