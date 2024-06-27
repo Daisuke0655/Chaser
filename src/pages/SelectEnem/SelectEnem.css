@@ -11,12 +11,12 @@
   margin: 8px;
 }
 
-.search_bar > input {
+.search_bar>input {
   border: none !important;
   background-color: #f0f2f5;
 }
 
-.search_bar > input:focus {
+.search_bar>input:focus {
   outline-width: 0;
 }
 
