@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./SelectEnem.css";
 import { useNavigate, useParams } from "react-router-dom";
 import EditMap from "../EditMap/EditMap";
+import PopUp from "../../components/popUp";
 
 function SelectEnem() {
   const { userId } = useParams();
@@ -31,30 +32,38 @@ function SelectEnem() {
     "0000200000000H0",
     "000003000003000",
   ]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const onClickStartButton = async () => {
+    setIsLoading(true);
     if (!nameHot) {
       console.log("!nameHot");
+      setIsLoading(false);
       return;
     }
     if (!nameCool) {
       console.log("!nameCool");
+      setIsLoading(false);
       return;
     }
     if (slotHot < 0) {
       console.log("!slotHot");
+      setIsLoading(false);
       return;
     }
     if (slotCool < 0) {
       console.log("!slotCool");
+      setIsLoading(false);
       return;
     }
     if (!board) {
       console.log("!board");
+      setIsLoading(false);
       return;
     }
     if (turn < 1) {
       console.log("!turn");
+      setIsLoading(false);
       return;
     }
 
@@ -90,8 +99,10 @@ function SelectEnem() {
       };
       const encodedData = encodeURIComponent(JSON.stringify(mergedData));
       navigate(`/match/${encodedData}`);
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
+      setIsLoading(false);
     }
 
     console.log("complete start");
@@ -121,18 +132,26 @@ function SelectEnem() {
   const slotSelectors = (HorC) => {
     const slotArray = [];
     for (let i = 0; i < 3; i++) {
+      const isSelected =
+        (HorC === "H" && i === slotHot) || (HorC === "C" && i === slotCool);
+
       slotArray.push(
         <div className="program_items">
           <button
-            className={`program_buttons_${HorC}`}
+            className={`program_buttons ${HorC} ${
+              isSelected ? "selected" : ""
+            }`}
             onClick={() => onClickSlotButton(i, HorC)}
           >
-            スロット{i + 1}
+            <div className="label">
+              slot
+              <div className="num">{i + 1}</div>
+            </div>
           </button>
         </div>
       );
     }
-    return slotArray;
+    return <div className="program_Container">{slotArray}</div>;
   };
 
   const playerNameInput = (HorC) => {
@@ -141,13 +160,17 @@ function SelectEnem() {
     const onChangeName = (e) =>
       HorC === "C" ? setNameCool(e.target.value) : setNameHot(e.target.value);
     return (
-      <input
-        className="player_name_input"
-        value={nameCool}
-        placeholder={placeHolder}
-        onChange={onChangeName}
-        type="text"
-      />
+      <div className="player_name_input_container">
+        <label htmlFor="player_name_input_H">プレイヤー名：</label>
+        <input
+          id="player_name_input_H"
+          className="player_name_input"
+          value={nameCool}
+          placeholder={placeHolder}
+          onChange={onChangeName}
+          type="text"
+        />
+      </div>
     );
   };
 
@@ -155,49 +178,51 @@ function SelectEnem() {
     <>
       <div className="selectEnem">
         <div className="player_settings">
-          <div className="player_name_input_container">
+          <div className={"player_settings_item H"}>
+            <h2>HOT</h2>
             {playerNameInput("H")}
+            {slotSelectors("H")}
           </div>
-          <div className="program_Container">{slotSelectors("H")}</div>
-          <div>{"選択中 name:" + nameHot + " slot:" + slotHot}</div>
-
-          <div className="player_name_input_container">
+          <div className="player_settings_item C">
+            <h2>COOL</h2>
             {playerNameInput("C")}
+            {slotSelectors("C")}
           </div>
-          <div className="program_Container">{slotSelectors("C")}</div>
-
-          <div>{"選択中 name:" + nameCool + " slot:" + slotCool}</div>
         </div>
-        <div className="tern_select">
-          <label htmlFor="turn">ターン数</label>
-          <input
-            value={turn}
-            id="turn"
-            onChange={(e) => setTurn(e.target.value)}
-            type="number"
-            min={1}
-          />
+        <div className="match_settings">
+          <h2>ゲーム設定</h2>
+          <div className="tern_select">
+            <label htmlFor="turn">ターン数：</label>
+            <input
+              value={turn}
+              id="turn"
+              onChange={(e) => setTurn(e.target.value)}
+              type="number"
+              min={1}
+            />
+          </div>
+          <div>
+            <button className="secondary" onClick={togglePopUp}>
+              マップを制作
+            </button>
+          </div>
         </div>
-        <div>
-          <button className="startButton" onClick={onClickStartButton}>
-            対戦を始める
-          </button>
-        </div>
-        <div>
-          <button className="createMapButton" onClick={togglePopUp}>
-            マップを制作
-          </button>
-        </div>
-        <div>
-          <button className="backButton" onClick={onClickBackButton}>
+        <div className="actions">
+          <button className="secondary" onClick={onClickBackButton}>
             ←戻る
+          </button>
+          <button
+            className={"primary" + (isLoading ? " loading" : "")}
+            onClick={onClickStartButton}
+          >
+            <div className="label">対戦を始める</div>
           </button>
         </div>
       </div>
       {isPopUpVisible && (
-        <div className="popUp">
+        <PopUp allowClose={false}>
           <EditMap onClose={togglePopUp} onSave={handleSaveMap} />
-        </div>
+        </PopUp>
       )}
     </>
   );
