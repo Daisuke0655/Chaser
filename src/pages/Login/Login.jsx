@@ -11,9 +11,11 @@ const Login = () => {
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     console.log(formData);
 
     const newErrors = {};
@@ -39,6 +41,7 @@ const Login = () => {
     } else {
       setErrors(newErrors);
     }
+    setIsLoading(false);
   };
 
   const handleChange = (e) => {
@@ -56,7 +59,7 @@ const Login = () => {
           <h1 className="heading">ログイン</h1>
           <form className="form" onSubmit={handleSubmit}>
             <div className="form-field">
-              <label className="label">名前:</label>
+              <label>名前:</label>
               {errors.name && <span className="error">{errors.name}</span>}
               <input
                 type="text"
@@ -67,7 +70,7 @@ const Login = () => {
               ></input>
             </div>
             <div className="form-field">
-              <label className="label">パスワード:</label>
+              <label>パスワード:</label>
               {errors.password && (
                 <span className="error">{errors.password}</span>
               )}
@@ -79,9 +82,14 @@ const Login = () => {
                 className="input"
               ></input>
             </div>
-            <button type="submit" className="button">
-              ログイン
-            </button>
+            <div className="actions">
+              <button
+                type="submit"
+                className={"primary " + (isLoading ? "loading" : "")}
+              >
+                <div className="label">ログイン</div>
+              </button>
+            </div>
           </form>
         </div>
       </div>

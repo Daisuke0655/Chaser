@@ -23,12 +23,6 @@
     margin-bottom: 20px;
   }
 
-  .label {
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--dark-text-color);
-  }
-
   .input {
     width: 90%;
     padding: 10px;
@@ -37,25 +31,13 @@
     border-radius: 4px;
   }
 
-  .button {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--light-text-color);
-    background-color: var(--button-widget-color);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .button:hover {
-    background-color: var(--button-widget-hover-color);
-  }
-
   .error {
     color: var(--warn-500);
     margin-bottom: 10px;
+  }
+  .actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
