@@ -1,6 +1,12 @@
 .App {
   text-align: center;
 }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
 
 :root {
   /* Primary */
@@ -62,6 +68,77 @@
   --button-widget-hover-color: var(--primary-600);
   --light-text-color: var(--neutral-100);
   --dark-text-color: var(--neutral-900);
+}
+
+input {
+  background-color: var(--neutral-100);
+  border-radius: 0.5rem;
+  width: 100%;
+  font-size: 1.5rem;
+  padding: 0.5rem 0.5rem;
+  outline: none !important;
+
+  transition: border 0.3s ease;
+
+  border: 3px solid var(--neutral-300);
+  &:focus {
+    border: 3px solid var(--neutral-800);
+  }
+}
+@keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+button.primary {
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  color: var(--light-text-color);
+  background-color: var(--button-widget-color);
+  border: 0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color max-width 0.3s ease;
+
+  &:hover {
+    background-color: var(--button-widget-hover-color);
+  }
+  &.loading {
+    background-color: var(--neutral-300);
+    cursor: progress;
+    .label {
+      display: none;
+    }
+    &::after {
+      content: "";
+      display: block;
+      min-width: 2rem;
+      height: 2rem;
+      border: 0.2rem solid var(--neutral-800);
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: spinner 0.8s linear infinite;
+      transform-origin: 50%;
+    }
+  }
+}
+button.secondary {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  color: var(--dark-text-color);
+  background-color: var(--neutral-100);
+  border: 3px solid var(--neutral-300);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: var(--neutral-200);
+  }
 }
 
 /* .App-logo {
