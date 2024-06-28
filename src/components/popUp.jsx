@@ -9,7 +9,7 @@ import "./popUp.css";
  *
  * @returns {JSX.Element}
  */
-const PopUp = ({ children, onClose, allowClose }) => {
+export function PopUp({ children, onClose, allowClose }) {
   const handleClose = () => {
     if (allowClose) {
       onClose();
@@ -30,5 +30,4 @@ const PopUp = ({ children, onClose, allowClose }) => {
       </div>
     </div>
   );
-};
-export default PopUp;
+}

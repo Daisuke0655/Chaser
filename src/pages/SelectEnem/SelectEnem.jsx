@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./SelectEnem.css";
 import { useNavigate, useParams } from "react-router-dom";
 import EditMap from "../EditMap/EditMap";
-import PopUp from "../../components/popUp";
+import { PopUp } from "../../components/popUp";
 
 function SelectEnem() {
   const { userId } = useParams();

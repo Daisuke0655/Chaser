@@ -22,16 +22,13 @@
   border-radius: 50%;
 }
 
-.popUp {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+.select_save_slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1rem;
+  gap: 0.5rem;
 }
-
 .slot_send_button {
   width: 100%;
   height: 100%;

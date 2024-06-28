@@ -3,6 +3,7 @@ import { Editor } from "@monaco-editor/react";
 import { MdFileUpload } from "react-icons/md";
 import { FaFileImport } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
+import { PopUp } from "../../components/popUp";
 
 import "./EditScript.css";
 
@@ -13,6 +14,7 @@ const EditScript = () => {
   const [isPopUpVisible, setPopUpVisible] = useState(false);
   const navigate = useNavigate();
   const { userId } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleEditorDidMount(editor, monaco) {
     editorRef.current = editor;
@@ -55,7 +57,7 @@ const EditScript = () => {
           method: "POST",
           body: JSON.stringify(jsonData),
           mode: "cors",
-        },
+        }
       );
       if (response.ok) {
         console.log("File uploaded successfully");
@@ -70,12 +72,14 @@ const EditScript = () => {
   };
 
   const handleDownload = (num) => {
+    setIsLoading(true);
     if (editorRef.current) {
-      togglePopUp();
       const content = editorRef.current.getValue();
       console.log(content);
       sendFile(content, num);
+      togglePopUp();
     }
+    setIsLoading(false);
   };
 
   return (
@@ -101,35 +105,29 @@ const EditScript = () => {
         <MdFileUpload size={25} color="white" />
       </span>
       {isPopUpVisible && (
-        <div className="popUp">
+        <PopUp>
           <p>保存するスロットを選択して下さい</p>
-          <div className="program_Container">
-            <div className="program_items">
-              <button
-                className="slot_send_button"
-                onClick={() => handleDownload(0)}
-              >
-                スロット１
-              </button>
-            </div>
-            <div className="program_items">
-              <button
-                className="slot_send_button"
-                onClick={() => handleDownload(1)}
-              >
-                スロット２
-              </button>
-            </div>
-            <div className="program_items">
-              <button
-                className="slot_send_button"
-                onClick={() => handleDownload(2)}
-              >
-                スロット３
-              </button>
-            </div>
+          <div className="select_save_slot">
+            <button
+              className={"secondary " + (isLoading ? "loading" : "")}
+              onClick={() => handleDownload(0)}
+            >
+              <div className="label">スロット１</div>
+            </button>
+            <button
+              className={"secondary " + (isLoading ? "loading" : "")}
+              onClick={() => handleDownload(1)}
+            >
+              <div className="label">スロット２</div>
+            </button>
+            <button
+              className={"secondary " + (isLoading ? "loading" : "")}
+              onClick={() => handleDownload(2)}
+            >
+              <div className="label">スロット３</div>
+            </button>
           </div>
-        </div>
+        </PopUp>
       )}
     </>
   );
