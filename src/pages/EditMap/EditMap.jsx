@@ -102,39 +102,39 @@ const EditMap = ({ onClose, onSave }) => {
     if (0 <= slct && slct < items.length) setSelectedItem(slct);
   };
 
-  const handleFieldClicked = (ev) => {
-    const rect = ev.target.getBoundingClientRect();
-    let x = ev.clientX - rect.left;
-    let y = ev.clientY - rect.top;
-    let slctx = Math.floor(x / (blockSize + lineWidth));
-    let slcty = Math.floor(y / (blockSize + lineWidth));
-    if (0 <= slctx && slctx < width && 0 <= slcty && slcty < height) {
-      let newField = structuredClone(field);
-      if (selectedItem === 3 || selectedItem === 4) {
-        //CかHを置くとき
-        for (let i = 0; i < height; i++) {
-          for (let j = 0; j < width; j++) {
-            if (newField[i][j] === "H" || newField[i][j] === "C")
-              newField[i][j] = "0";
-          }
-        }
-        if (selectedItem === 3) {
-          newField[slcty][slctx] = "C";
-          newField[height - slcty - 1][width - slctx - 1] = "H";
-        } else {
-          newField[slcty][slctx] = "H";
-          newField[height - slcty - 1][width - slctx - 1] = "C";
-        }
-      } else {
-        if (newField[slcty][slctx] === "C" || newField[slcty][slctx] === "H")
-          return;
-        newField[slcty][slctx] = items[selectedItem].char;
-        newField[height - slcty - 1][width - slctx - 1] =
-          items[selectedItem].char;
-      }
-      setField(newField);
-    }
-  };
+  // const handleFieldClicked = (ev) => {
+  //   const rect = ev.target.getBoundingClientRect();
+  //   let x = ev.clientX - rect.left;
+  //   let y = ev.clientY - rect.top;
+  //   let slctx = Math.floor(x / (blockSize + lineWidth));
+  //   let slcty = Math.floor(y / (blockSize + lineWidth));
+  //   if (0 <= slctx && slctx < width && 0 <= slcty && slcty < height) {
+  //     let newField = structuredClone(field);
+  //     if (selectedItem === 3 || selectedItem === 4) {
+  //       //CかHを置くとき
+  //       for (let i = 0; i < height; i++) {
+  //         for (let j = 0; j < width; j++) {
+  //           if (newField[i][j] === "H" || newField[i][j] === "C")
+  //             newField[i][j] = "0";
+  //         }
+  //       }
+  //       if (selectedItem === 3) {
+  //         newField[slcty][slctx] = "C";
+  //         newField[height - slcty - 1][width - slctx - 1] = "H";
+  //       } else {
+  //         newField[slcty][slctx] = "H";
+  //         newField[height - slcty - 1][width - slctx - 1] = "C";
+  //       }
+  //     } else {
+  //       if (newField[slcty][slctx] === "C" || newField[slcty][slctx] === "H")
+  //         return;
+  //       newField[slcty][slctx] = items[selectedItem].char;
+  //       newField[height - slcty - 1][width - slctx - 1] =
+  //         items[selectedItem].char;
+  //     }
+  //     setField(newField);
+  //   }
+  // };
   const handleFieldClickedJsxVer = (position) => {
     let slctx = position.x;
     let slcty = position.y;
@@ -172,8 +172,12 @@ const EditMap = ({ onClose, onSave }) => {
     onClose();
   };
 
+  const handleClose = () => {
+    onClose();
+  };
+
   return (
-    <div className="container">
+    <div className="editMap">
       <h1 className="heading">盤面編集</h1>
       <canvas
         onClick={handleItemClicked}
@@ -187,15 +191,21 @@ const EditMap = ({ onClose, onSave }) => {
         height={height * (lineWidth + blockSize) + lineWidth}
         id="canvas"
       ></canvas> */}
-      <FieldDrawByJsx
-        fields={[field]}
-        turnNum={0}
-        onClick={handleFieldClickedJsxVer}
-      />
-      <br></br>
-      <button id="export" onClick={handleExport}>
-        保存
-      </button>
+      <div className="map">
+        <FieldDrawByJsx
+          fields={[field]}
+          turnNum={0}
+          onClick={handleFieldClickedJsxVer}
+        />
+      </div>
+      <div className="editMap_actions">
+        <button id="cancel" className="secondary" onClick={handleClose}>
+          キャンセル
+        </button>
+        <button id="export" className="primary" onClick={handleExport}>
+          保存
+        </button>
+      </div>
     </div>
   );
 };
