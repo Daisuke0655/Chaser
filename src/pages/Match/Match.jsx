@@ -1,10 +1,15 @@
-import postMatchLog from "../../components/postMatchLog";
+import {
+  RxArrowLeft,
+  RxArrowRight,
+  RxStopwatch,
+  RxPause,
+  RxPlay,
+  RxHamburgerMenu,
+} from "react-icons/rx";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./Match.css";
-import fieldDraw from "../../components/fieldDraw";
 import FieldDrawByJsx from "../../components/fieldDrawByJsx";
-
 const Match = () => {
   const height = 17;
   const width = 15;
@@ -38,16 +43,17 @@ const Match = () => {
   }, [jsonData]);
 
   useEffect(() => {
+    console.log(matchLog);
     if (matchLog) {
       const newFields = [];
-      let coldPos = { x: 0, y: 0 },
+      let coolPos = { x: 0, y: 0 },
         hotPos = { x: 0, y: 0 };
 
       for (let i = 0; i < height; i++) {
         for (let j = 0; j < width; j++) {
           if (matchLog.Field[i][j] === "C") {
-            coldPos.x = i;
-            coldPos.y = j;
+            coolPos.x = i;
+            coolPos.y = j;
           }
           if (matchLog.Field[i][j] === "H") {
             hotPos.x = i;
@@ -73,8 +79,8 @@ const Match = () => {
         let px, py;
         if (turn % 2) {
           // Cold
-          px = coldPos.x + dir[act[1]].x;
-          py = coldPos.y + dir[act[1]].y;
+          px = coolPos.x + dir[act[1]].x;
+          py = coolPos.y + dir[act[1]].y;
         } else {
           // Hot
           px = hotPos.x + dir[act[1]].x;
@@ -89,11 +95,11 @@ const Match = () => {
         } else if (act[0] === "w") {
           if (turn % 2) {
             if (currentField[px][py] === "3")
-              currentField[coldPos.x][coldPos.y] = "2";
-            else currentField[coldPos.x][coldPos.y] = "0";
-            coldPos.x = px;
-            coldPos.y = py;
-            currentField[coldPos.x][coldPos.y] = "C";
+              currentField[coolPos.x][coolPos.y] = "2";
+            else currentField[coolPos.x][coolPos.y] = "0";
+            coolPos.x = px;
+            coolPos.y = py;
+            currentField[coolPos.x][coolPos.y] = "C";
           } else {
             if (currentField[px][py] === "3")
               currentField[hotPos.x][hotPos.y] = "2";
@@ -122,28 +128,175 @@ const Match = () => {
     return <div>Loading...</div>;
   }
 
-  return (
-    <div className="container">
-      <h1 className="heading">試合結果</h1>
-      <button
-        onClick={previousTurn}
-        className={`button ${turnNum <= 0 ? "button-disable" : ""}`}
-      >
-        前ターン
-      </button>
-      <button onClick={nextTurn} className="button">
-        次ターン
-      </button>
-      <div>{turnNum + 1}ターン目</div>
+  const resultComponent = ({ winner, player }) => {
+    const anotherPlayer = player === "HOT" ? "COOL" : "HOT";
+    if (winner === player) {
+      return <div className="result">Win</div>;
+    } else if (winner === anotherPlayer) {
+      return <div className="result lose">Lose</div>;
+    } else {
+      return <div className="result lose">Draw!</div>;
+    }
+  };
 
-      <div className="field-container">
-        <FieldDrawByJsx
-          fields={fields}
-          turnNum={turnNum}
-          height={height}
-          width={width}
-        />
+  const logComponent = (log, player, showRealtimeLog) => {
+    let initial = 0;
+    if (player === "HOT") initial = 1;
+    const handleClick = (num) => {
+      setTurnNum(num);
+    };
+    showRealtimeLog = showRealtimeLog || false;
+
+    const actToText = (act) => {
+      if (act[0] === "p") {
+        return "Put";
+      } else if (act[0] === "w") {
+        return "Walk";
+      }
+    };
+
+    const dirToText = (dir) => {
+      if (dir === "u") {
+        return "Up";
+      } else if (dir === "d") {
+        return "Down";
+      } else if (dir === "l") {
+        return "Left";
+      } else if (dir === "r") {
+        return "Right";
+      }
+    };
+
+    const list = log.map((act, i) => {
+      if (
+        (i % 2 === initial && !showRealtimeLog) ||
+        (showRealtimeLog && i <= turnNum)
+      ) {
+        let className = "log_item";
+        if (turnNum === i) {
+          className += " current";
+        }
+        return (
+          <>
+            <div key={i} onClick={() => handleClick(i)} className={className}>
+              <p>{i + 1}</p>
+              <p>{actToText(act[0])}</p>
+              <p>{dirToText(act[1])}</p>
+            </div>
+            {turnNum - 1 === i && <div className="log_item_bar" />}
+          </>
+        );
+      }
+      return null;
+    });
+    return <div className="log">{list}</div>;
+  };
+
+  const matchControlButton = ({ text, icon, onClick, disabled }) => {
+    return (
+      <button
+        onClick={onClick}
+        aria-label={text}
+        className={`control ${disabled ? "disable" : ""}`}
+        disabled={disabled}
+      >
+        {icon}
+      </button>
+    );
+  };
+
+  //TODO:必要に応じて追加
+  const matchControls = {
+    previousTurn: {
+      text: "前ターン",
+      icon: <RxArrowLeft />,
+      onClick: previousTurn,
+      disabled: turnNum <= 0,
+      description: "前のターンに戻ります",
+    },
+    realtimeLog: {
+      text: "リアルタイムログ",
+      icon: <RxStopwatch />,
+      onClick: () => {},
+      disabled: false,
+      description: "リアルタイムでログを表示します",
+    },
+    nextTurn: {
+      text: "次ターン",
+      icon: <RxArrowRight />,
+      onClick: nextTurn,
+      disabled: turnNum >= fields.length - 1,
+      description: "次のターンに進みます",
+    },
+    stopAutoPlay: {
+      text: "停止",
+      icon: <RxPause />,
+      onClick: () => {},
+      disabled: false,
+      description: "自動再生を停止します",
+    },
+    startAutoPlay: {
+      text: "再生",
+      icon: <RxPlay />,
+      onClick: () => {},
+      disabled: false,
+      description: "自動再生を開始します",
+    },
+    openOptions: {
+      text: "オプション",
+      icon: <RxHamburgerMenu />,
+      onClick: () => {},
+      disabled: false,
+      description: "オプションを開きます",
+    },
+  };
+
+  return (
+    <div className="match">
+      <div className="player_container C">
+        {resultComponent({ winner: matchLog.winner, player: "COOL" })}
+
+        <div className="player">
+          <div className="player_name">COOL</div>
+          <div className="player_name">
+            {/* TODO:ユーザーネームを表示させる */}
+          </div>
+          <div className="player_score">12</div>
+          {/* TODO:スコアを表示させる */}
+        </div>
+        {logComponent(matchLog.log, "COOL")}
       </div>
+      <div className="main_container">
+        <div className="field_container">
+          <FieldDrawByJsx
+            fields={fields}
+            turnNum={turnNum}
+            height={height}
+            width={width}
+          />
+        </div>
+        <div className="match_controls">
+          {matchControlButton(matchControls.previousTurn)}
+          {matchControlButton(matchControls.stopAutoPlay)}
+          {matchControlButton(matchControls.nextTurn)}
+          {/* TODO:必要に応じて追加 */}
+          <div>{turnNum + 1}ターン目</div>
+        </div>
+      </div>
+      <div className="player_container H">
+        {resultComponent({ winner: matchLog.winner, player: "HOT" })}
+        <div className="player">
+          <div className="player_name">HOT</div>
+          <div className="player_name">
+            {/* TODO:ユーザーネームを表示させる */}
+          </div>
+
+          <div className="player_score">12</div>
+          {/* TODO:スコアを表示させる */}
+        </div>
+        {logComponent(matchLog.log, "HOT")}
+      </div>
+      {}
     </div>
   );
 };
