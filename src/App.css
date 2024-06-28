@@ -5,6 +5,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  padding: 0;
   margin: 0;
 }
 
@@ -138,6 +139,28 @@ button.secondary {
 
   &:hover {
     background-color: var(--neutral-200);
+  }
+  &.disabled {
+    background-color: var(--neutral-300);
+    cursor: not-allowed;
+  }
+  &.loading {
+    background-color: var(--neutral-300);
+    cursor: progress;
+    .label {
+      display: none;
+    }
+    &::after {
+      content: "";
+      display: block;
+      min-width: 2rem;
+      height: 2rem;
+      border: 0.2rem solid var(--neutral-800);
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: spinner 0.8s linear infinite;
+      transform-origin: 50%;
+    }
   }
 }
 
