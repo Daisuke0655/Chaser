@@ -151,23 +151,6 @@
       }
     }
   }
-
-  .field_container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 100%;
-
-    margin-top: 2rem;
-    overflow: hidden;
-    &::after {
-      content: "";
-      display: block;
-      padding-top: 100%;
-    }
-  }
 }
 
 @media screen and (max-width: 1024px) {
@@ -190,9 +173,6 @@
       left: 0;
       height: calc(100dvh - 200px);
       padding: 0 auto;
-      .field_container {
-        width: 90%;
-      }
     }
   }
 }
