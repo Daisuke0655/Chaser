@@ -1,0 +1,25 @@
+.editMap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  .editMap_actions {
+    display: flex;
+    gap: 1rem;
+    flex-direction: row;
+  }
+  .map {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    container-name: field-container;
+    container-type: inline-size;
+    overflow: hidden;
+  }
+}

@@ -64,12 +64,12 @@ function Initial() {
     <div className="initial">
       <h1>Welcome to CHaser</h1>
       <div className="button-box">
-        <button className="button-style" onClick={onClickGameButton}>
+        <button className="primary" onClick={onClickGameButton}>
           対戦を始める
         </button>
       </div>
       <div className="button-box">
-        <button className="button-style" onClick={onClickEditScriptButton}>
+        <button className="primary" onClick={onClickEditScriptButton}>
           ファイルを編集
         </button>
       </div>
