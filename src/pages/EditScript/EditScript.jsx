@@ -1,13 +1,15 @@
-import React, { useState, useRef } from "react";
-import { Editor } from "@monaco-editor/react";
-import { MdFileUpload } from "react-icons/md";
+import React, { useState, useRef} from 'react';
+import { Editor } from '@monaco-editor/react';
+import { MdFileUpload   } from "react-icons/md";
 import { FaFileImport } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { PopUp } from "../../components/popUp";
 
-import "./EditScript.css";
 
-const EditScript = () => {
+import './EditScript.css'
+
+const EditScript = ({userId}) => {
+
   const editorRef = useRef(null);
   const fileInputRef = useRef(null);
   const [fileName, setFileName] = useState("");
@@ -16,40 +18,41 @@ const EditScript = () => {
   const { userId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
 
-  function handleEditorDidMount(editor, monaco) {
-    editorRef.current = editor;
+
+  function handleEditorDidMount(editor,monaco){
+    editorRef.current = editor
   }
 
   const togglePopUp = () => {
-    setPopUpVisible(!isPopUpVisible);
-  };
+    setPopUpVisible(!isPopUpVisible)
+  }
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setFileName(file.name);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const content = e.target.result;
-        if (editorRef.current) {
-          editorRef.current.setValue(content);
+  const handleFileChange = (event) =>{
+    const file = event.target.files[0]
+    if(file){
+      setFileName(file.name)
+      const reader = new FileReader()
+      reader.onload = (e) =>{
+        const content = e.target.result
+        if(editorRef.current){
+          editorRef.current.setValue(content)
         }
-      };
-      reader.readAsText(file);
+      }
+      reader.readAsText(file)
     }
-  };
+  }
 
-  const handleUploadClick = () => {
-    fileInputRef.current.click();
-  };
+  const handleUploadClick = () =>{
+    fileInputRef.current.click()
+  }
 
-  const sendFile = async (content, num) => {
+  const sendFile = async (content,num) =>{
     const jsonData = {
       UserID: userId.toString(),
       slot: num,
       program: content,
-      language: "python",
-    };
+      language: 'python'
+    }
     try {
       const response = await fetch(
         "https://hpaiddjrprewsmr3kjbbvk5sfe0jmuyd.lambda-url.ap-northeast-1.on.aws/",
@@ -68,8 +71,10 @@ const EditScript = () => {
     } catch (error) {
       console.error(error);
     }
-    console.log("end");
-  };
+    console.log("end")
+
+
+  }
 
   const handleDownload = (num) => {
     setIsLoading(true);
@@ -130,7 +135,9 @@ const EditScript = () => {
         </PopUp>
       )}
     </>
+
   );
-};
+}
 
 export default EditScript;
+

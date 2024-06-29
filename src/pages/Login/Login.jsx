@@ -1,10 +1,17 @@
-import React, { useState } from "react";
-import "./Login.css";
-import postUserData from "../../components/postUserData";
-import { useNavigate } from "react-router-dom";
+
+import React, { useState } from 'react';
+import './Login.css';
+import postUserData from '../../components/postUserData'
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+
+  const [formData,setFormData] = useState({
+    name: '',
+    password: '',
+  })
+  const [errors,setErrors] = useState({})
 
   const [formData, setFormData] = useState({
     name: "",
@@ -18,39 +25,40 @@ const Login = () => {
     setIsLoading(true);
     console.log(formData);
 
+
     const newErrors = {};
 
-    if (!formData.name) {
-      newErrors.name = "名前を入力してください";
+    if(!formData.name){
+      newErrors.name = '名前を入力してください'
     }
     if (!formData.password) {
-      newErrors.password = "パスワードを入力してください";
+      newErrors.password = 'パスワードを入力してください';
     }
-
-    if (Object.keys(newErrors).length === 0) {
-      const result = await postUserData(formData);
-      if (result) {
-        navigate(`/initial/${formData.name}`);
-      } else {
-        setFormData({ name: "", password: "" });
-        setErrors({});
-        newErrors.name = "名前またはパスワードが違います";
-        setErrors(newErrors);
-        console.log("error");
+  
+    if(Object.keys(newErrors).length === 0){
+      const result = await postUserData(formData)
+      if(result){
+        navigate(`/home/${formData.name}`) 
       }
-    } else {
-      setErrors(newErrors);
+      else{
+        setFormData({ name: '', password: ''})
+        setErrors({})
+        newErrors.name = '名前またはパスワードが違います'
+        setErrors(newErrors)
+        console.log('error')
+      }
+    }else{
+      setErrors(newErrors)
     }
     setIsLoading(false);
   };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) =>{
+    setFormData({...formData,[e.target.name]: e.target.value})
     setErrors((prevError) => ({
-      ...prevError,
-      [e.target.name]: "",
-    }));
-  };
+        ...prevError,[e.target.name]:''
+    }))
+  }
 
   return (
     <>
@@ -95,6 +103,6 @@ const Login = () => {
       </div>
     </>
   );
-};
+}
 
 export default Login;
