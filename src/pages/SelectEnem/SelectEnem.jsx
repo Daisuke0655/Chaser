@@ -1,6 +1,6 @@
-import React, { useState, } from "react";
-import './SelectEnem.css';
-import { useNavigate} from 'react-router-dom';
+import React, { useState } from "react";
+import "./SelectEnem.css";
+import { useNavigate, useParams } from "react-router-dom";
 import EditMap from "../EditMap/EditMap";
 import { PopUp } from "../../components/popUp";
 
@@ -103,79 +103,31 @@ function SelectEnem() {
     } catch (error) {
       console.error(error);
       setIsLoading(false);
-
     }
 
+    console.log("complete start");
+  };
 
-    return (
-            <>
-            <div className='selectEnem'>
-                <div className="search">    
-                    <input
-                    className="search_bar_input"
-                    value={nameHot}
-                    placeholder="HOTプレイヤー名を入力"
-                    onChange={e=>setNameHot(e.target.value)}
-                    type="text"
-                    />
-                </div>
-                <div className="program_Container">
-                    <div className="program_items">
-                        <button className="program_buttons_hot" onClick={()=>onClickSlotButton(0,"H")}>スロット１</button></div>
-                    <div className="program_items">
-                        <button className="program_buttons_hot" onClick={()=>onClickSlotButton(1,"H")}>スロット２</button></div>
-                    <div className="program_items">
-                        <button className="program_buttons_hot" onClick={()=>onClickSlotButton(2,"H")}>スロット３</button></div>
-                </div>
-                <div>{"選択中 name:"+nameHot+" slot:"+slotHot}</div>
+  const togglePopUp = () => {
+    setIsPopUpVisible(!isPopUpVisible);
+  };
 
-                <div className="search">    
-                    <input
-                    className="search_bar_input"
-                    value={nameCool}
-                    placeholder="COOLプレイヤー名を入力"
-                    onChange={e=>setNameCool(e.target.value)}
-                    type="text"
-                    />
-                </div>
-                <div className="program_Container">
-                    <div className="program_items">
-                        <button className="program_buttons_cool" onClick={()=>onClickSlotButton(0,"C")}>スロット１</button></div>
-                    <div className="program_items">
-                        <button className="program_buttons_cool" onClick={()=>onClickSlotButton(1,"C")}>スロット２</button></div>
-                    <div className="program_items">
-                        <button className="program_buttons_cool" onClick={()=>onClickSlotButton(2,"C")}>スロット３</button></div>
-                </div>
-                <div>{"選択中 name:"+nameCool+" slot:"+slotCool}</div>
-                <div className="search">
-                    <label htmlFor="turn">ターン数</label>
-                    <input
-                    value={turn}
-                    id="turn"
-                    onChange={e=>setTurn(e.target.value)}
-                    type="number"
-                    min={1}
-                    />
-                </div>
-                <div>
-                    <button className="startButton" onClick={onClickStartButton}>対戦を始める</button>
-                </div>
-                <div>
-                    <button className="createMapButton" onClick={togglePopUp}>マップを制作</button>
-                </div>
-                <div>
-                    <button className="backButton" onClick={onClickBackButton}>←戻る</button>
-                </div>
-                
-            </div>
-            {isPopUpVisible &&
-                <div className="popUp">
-                    <EditMap onClose={togglePopUp} onSave={handleSaveMap} />
-                </div>
-            }
-        </>
-    );
-  }
+  const handleSaveMap = (newBoard) => {
+    setBoard(newBoard);
+  };
+
+  const onClickSlotButton = (num, HorC) => {
+    if (HorC === "H") {
+      setSlotHot(num);
+    } else if (HorC === "C") {
+      setSlotCool(num);
+    }
+  };
+
+  const onClickBackButton = () => {
+    console.log("back to the InitialPage");
+    navigate(`/initial/${userId}`);
+  };
 
   const slotSelectors = (HorC) => {
     const slotArray = [];
@@ -276,5 +228,4 @@ function SelectEnem() {
   );
 }
 
-export default SelectEnem
-
+export default SelectEnem;

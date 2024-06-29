@@ -116,14 +116,13 @@ const Match = () => {
     }
   }, [matchLog]);
 
+  const previousTurn = () => {
+    if (turnNum > 0) setTurnNum(turnNum - 1);
+  };
 
-    const previousTurn = () => {
-        if (turnNum > 0) setTurnNum(turnNum - 1);
-    };
-
-    const nextTurn = () => {
-        if (turnNum < fields.length - 1) setTurnNum(turnNum + 1);
-    };
+  const nextTurn = () => {
+    if (turnNum < fields.length - 1) setTurnNum(turnNum + 1);
+  };
 
   if (!matchLog) {
     return <div>Loading...</div>;
@@ -299,7 +298,6 @@ const Match = () => {
       </div>
     </div>
   );
-
 };
 
 export default Match;
