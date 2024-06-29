@@ -261,7 +261,7 @@ const Match = () => {
           <div className="player_name">
             {/* TODO:ユーザーネームを表示させる */}
           </div>
-          <div className="player_score">12</div>
+          <div className="player_score">0</div>
           {/* TODO:スコアを表示させる */}
         </div>
         {logComponent(matchLog.log, "COOL")}
@@ -291,12 +291,11 @@ const Match = () => {
             {/* TODO:ユーザーネームを表示させる */}
           </div>
 
-          <div className="player_score">12</div>
+          <div className="player_score">0</div>
           {/* TODO:スコアを表示させる */}
         </div>
         {logComponent(matchLog.log, "HOT")}
       </div>
-      {}
     </div>
   );
 };
