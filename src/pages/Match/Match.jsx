@@ -33,6 +33,7 @@ const Match = () => {
   const [isPopUpVisible,setPopUpVisible] = useState(false);
   const [autoSpeed,setAutoSpeed]=useState(1000)
   const [scores, setScores] = useState([]);
+  const [speadM,setSpeadM]=useState(1)
   const { jsonData } = useParams();
   
   useEffect(() => {
@@ -242,6 +243,18 @@ const Match = () => {
     );
   };
 
+  const handleAutoSpead = () =>{
+    if(Auto){
+        if(autoSpeed === 125){
+            setAutoSpeed(1000)
+            setSpeadM(1)
+        }else{
+            setAutoSpeed(autoSpeed / 2)
+            setSpeadM(speadM*2)
+        }
+    }
+  }
+
   //TODO:必要に応じて追加
   const matchControls = {
     previousTurn: {
@@ -274,15 +287,17 @@ const Match = () => {
     },
     startAutoPlay: {
       text: "再生",
-      icon: <RxPlay />,
-      onClick: () => {setAuto(true)},
+      icon: !Auto ? <RxPlay /> : <RxPause />,
+      onClick: () => {!Auto ? setAuto(true) : setAuto(false)},
       disabled: false,
       description: "自動再生を開始します",
     },
     openOptions: {
       text: "オプション",
-      icon: <RxHamburgerMenu />,
-      onClick: () => {setPopUpVisible(!isPopUpVisible)},
+      icon: <div> x {speadM}</div>,
+      onClick: () => {
+        handleAutoSpead()
+    },
       disabled: false,
       description: "オプションを開きます",
     },
@@ -313,10 +328,9 @@ const Match = () => {
           />
         </div>
         <div className="match_controls">
-          {matchControlButton(matchControls.openOptions)}
           {matchControlButton(matchControls.previousTurn)}
-          {matchControlButton(matchControls.stopAutoPlay)}
           {matchControlButton(matchControls.startAutoPlay)}
+          {matchControlButton(matchControls.openOptions)}
           {matchControlButton(matchControls.nextTurn)}
           {/* TODO:必要に応じて追加 */}
           <div>{turnNum + 1}ターン目</div>
