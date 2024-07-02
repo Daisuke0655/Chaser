@@ -190,6 +190,10 @@ const Match = () => {
         return "Put";
       } else if (act[0] === "w") {
         return "Walk";
+      } else if (act[0] === "s"){
+        return "Search";
+      } else if (act[0] === "l"){
+        return "Look"
       }
     };
 
