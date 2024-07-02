@@ -92,6 +92,8 @@ function SelectEnem() {
       const boardData = {
         Field: board,
         Turn: turn,
+        CoolName: nameCool,
+        HotName: nameHot
       };
       const mergedData = {
         ...receiveData,

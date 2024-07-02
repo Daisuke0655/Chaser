@@ -33,6 +33,8 @@ const Match = () => {
     const fetchData = async () => {
       try {
         const log = JSON.parse(jsonData);
+        console.log(log.CoolName)
+        console.log(log.HotName)
         setMatchLog(log);
       } catch (error) {
         console.error("JSONパース中にエラー発生:", error);
@@ -44,7 +46,6 @@ const Match = () => {
   }, [jsonData]);
 
   useEffect(() => {
-    console.log(matchLog);
     if (matchLog) {
       const newFields = [];
       const newScores = [];
@@ -276,9 +277,8 @@ const Match = () => {
         {resultComponent({ winner: matchLog.winner, player: "COOL" })}
 
         <div className="player">
-          <div className="player_name">COOL</div>
+          <div className="player_name">{matchLog.CoolName}</div>
           <div className="player_name">
-            {/* TODO:ユーザーネームを表示させる */}
           </div>
           {scoreComponent({ turn: turnNum, player: "COOL" })}
         </div>
@@ -304,9 +304,8 @@ const Match = () => {
       <div className="player_container H">
         {resultComponent({ winner: matchLog.winner, player: "HOT" })}
         <div className="player">
-          <div className="player_name">HOT</div>
+          <div className="player_name">{matchLog.HotName}</div>
           <div className="player_name">
-            {/* TODO:ユーザーネームを表示させる */}
           </div>
           {scoreComponent({ turn: turnNum, player: "HOT"})}
         </div>
