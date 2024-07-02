@@ -26,6 +26,7 @@ const Match = () => {
   const [turnNum, setTurnNum] = useState(0);
   const [matchLog, setMatchLog] = useState(null);
   const [fields, setFields] = useState([]);
+  const [scores, setScores] = useState([]);
   const { jsonData } = useParams();
 
   useEffect(() => {
@@ -46,8 +47,10 @@ const Match = () => {
     console.log(matchLog);
     if (matchLog) {
       const newFields = [];
+      const newScores = [];
       let coolPos = { x: 0, y: 0 },
         hotPos = { x: 0, y: 0 };
+      let score = { cool: 0, hot: 0 };
 
       for (let i = 0; i < height; i++) {
         for (let j = 0; j < width; j++) {
@@ -69,6 +72,7 @@ const Match = () => {
         });
       }
       newFields.push(structuredClone(currentField));
+      newScores.push(structuredClone(score));
 
       matchLog.log.forEach((act) => {
         if (!act[1] || !dir[act[1]]) {
@@ -94,15 +98,19 @@ const Match = () => {
           currentField[px][py] = "2";
         } else if (act[0] === "w") {
           if (turn % 2) {
-            if (currentField[px][py] === "3")
+            if (currentField[px][py] === "3") {
               currentField[coolPos.x][coolPos.y] = "2";
+              score["cool"]++;
+            }
             else currentField[coolPos.x][coolPos.y] = "0";
             coolPos.x = px;
             coolPos.y = py;
             currentField[coolPos.x][coolPos.y] = "C";
           } else {
-            if (currentField[px][py] === "3")
+            if (currentField[px][py] === "3") {
               currentField[hotPos.x][hotPos.y] = "2";
+              score["hot"]++;
+            }
             else currentField[hotPos.x][hotPos.y] = "0";
             hotPos.x = px;
             hotPos.y = py;
@@ -110,9 +118,12 @@ const Match = () => {
           }
         }
         newFields.push(structuredClone(currentField));
+        newScores.push(structuredClone(score));
       });
       console.log(structuredClone(newFields));
       setFields(structuredClone(newFields));
+      console.log(structuredClone(newScores));
+      setScores(structuredClone(newScores));
     }
   }, [matchLog]);
 
@@ -261,8 +272,9 @@ const Match = () => {
           <div className="player_name">
             {/* TODO:ユーザーネームを表示させる */}
           </div>
-          <div className="player_score">0</div>
-          {/* TODO:スコアを表示させる */}
+          <div className="player_score">
+            { scores[turnNum]["cool"] }
+          </div>
         </div>
         {logComponent(matchLog.log, "COOL")}
       </div>
@@ -291,8 +303,9 @@ const Match = () => {
             {/* TODO:ユーザーネームを表示させる */}
           </div>
 
-          <div className="player_score">0</div>
-          {/* TODO:スコアを表示させる */}
+          <div className="player_score">
+            { scores[turnNum]["hot"] }
+          </div>
         </div>
         {logComponent(matchLog.log, "HOT")}
       </div>
