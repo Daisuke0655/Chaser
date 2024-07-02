@@ -6,10 +6,12 @@ import {
   RxPlay,
   RxHamburgerMenu,
 } from "react-icons/rx";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import "./Match.css";
 import FieldDrawByJsx from "../../components/fieldDrawByJsx";
+import { PopUp } from "../../components/popUp";
+import { PiDropSimple } from "react-icons/pi";
 const Match = () => {
   const height = 17;
   const width = 15;
@@ -26,9 +28,13 @@ const Match = () => {
   const [turnNum, setTurnNum] = useState(0);
   const [matchLog, setMatchLog] = useState(null);
   const [fields, setFields] = useState([]);
+  const [Auto,setAuto]=useState(false);
+  const intervalRef = useRef(null);
+  const [isPopUpVisible,setPopUpVisible] = useState(false);
+  const [autoSpeed,setAutoSpeed]=useState(1000)
   const [scores, setScores] = useState([]);
   const { jsonData } = useParams();
-
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -128,6 +134,13 @@ const Match = () => {
     }
   }, [matchLog]);
 
+  useEffect(() => {
+    if (Auto!==false) {
+        intervalRef.current = setInterval(()=>{if (turnNum < fields.length - 1){setTurnNum(turnNum + 1);console.log("auto turn")};}, autoSpeed);
+    }
+    return () => clearInterval(intervalRef.current);
+  }, [turnNum,Auto]);
+
   const previousTurn = () => {
     if (turnNum > 0) setTurnNum(turnNum - 1);
   };
@@ -158,6 +171,10 @@ const Match = () => {
       return <div className="result lose">Draw!</div>;
     }
   };
+  const handleClosePopUp = ()=>{
+    setPopUpVisible(!isPopUpVisible)
+    console.log('here')
+  } 
 
   const logComponent = (log, player, showRealtimeLog) => {
     let initial = 0;
@@ -251,27 +268,28 @@ const Match = () => {
     stopAutoPlay: {
       text: "停止",
       icon: <RxPause />,
-      onClick: () => {},
+      onClick: () => {setAuto(false)},
       disabled: false,
       description: "自動再生を停止します",
     },
     startAutoPlay: {
       text: "再生",
       icon: <RxPlay />,
-      onClick: () => {},
+      onClick: () => {setAuto(true)},
       disabled: false,
       description: "自動再生を開始します",
     },
     openOptions: {
       text: "オプション",
       icon: <RxHamburgerMenu />,
-      onClick: () => {},
+      onClick: () => {setPopUpVisible(!isPopUpVisible)},
       disabled: false,
       description: "オプションを開きます",
     },
   };
 
   return (
+    
     <div className="match">
       <div className="player_container C">
         {resultComponent({ winner: matchLog.winner, player: "COOL" })}
@@ -286,6 +304,7 @@ const Match = () => {
       </div>
       <div className="main_container">
         <div className="field_container">
+            
           <FieldDrawByJsx
             fields={fields}
             turnNum={turnNum}
@@ -294,8 +313,10 @@ const Match = () => {
           />
         </div>
         <div className="match_controls">
+          {matchControlButton(matchControls.openOptions)}
           {matchControlButton(matchControls.previousTurn)}
           {matchControlButton(matchControls.stopAutoPlay)}
+          {matchControlButton(matchControls.startAutoPlay)}
           {matchControlButton(matchControls.nextTurn)}
           {/* TODO:必要に応じて追加 */}
           <div>{turnNum + 1}ターン目</div>
@@ -312,6 +333,7 @@ const Match = () => {
         {logComponent(matchLog.log, "HOT")}
       </div>
     </div>
+    
   );
 };
 
