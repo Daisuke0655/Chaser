@@ -4,8 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import EditMap from "../EditMap/EditMap";
 import { PopUp } from "../../components/popUp";
 
-function SelectEnem() {
-  const { userId } = useParams();
+function SelectEnem({userId,onSetData}) {
   const [nameHot, setNameHot] = useState(userId);
   const [nameCool, setNameCool] = useState(userId);
   const [slotHot, setSlotHot] = useState(0);
@@ -101,6 +100,8 @@ function SelectEnem() {
       };
       const encodedData = encodeURIComponent(JSON.stringify(mergedData));
       navigate(`/match/${encodedData}`);
+      // onSetData(mergedData)
+      // onSetMatch(true)
       setIsLoading(false);
     } catch (error) {
       console.error(error);
@@ -138,7 +139,7 @@ function SelectEnem() {
         (HorC === "H" && i === slotHot) || (HorC === "C" && i === slotCool);
 
       slotArray.push(
-        <div className="program_items">
+        <div className="program_items" key={`${HorC}-${i}`}>
           <button
             className={`program_buttons ${HorC} ${
               isSelected ? "selected" : ""
@@ -210,9 +211,6 @@ function SelectEnem() {
           </div>
         </div>
         <div className="actions">
-          <button className="secondary" onClick={onClickBackButton}>
-            ←戻る
-          </button>
           <button
             className={"primary" + (isLoading ? " loading" : "")}
             onClick={onClickStartButton}
