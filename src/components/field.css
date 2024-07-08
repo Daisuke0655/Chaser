@@ -130,7 +130,9 @@
     /* max-width: min(100cqh, 100cqw); */
     /* max-height: min(100cqh, 100cqw); */
     /* width: min(100cqh, 100cqw); */
-    height: min(100cqh, 100cqw);
+    /* こちらの環境だとこの大きさが最適だが、この設定を使用して ウィジェットが崩れる場合は下の設定を適宜使用*/
+    height: min(80cqh, 80cqw);
+    /* height: min(100cqh, 100cqw); */
 
     background-color: var(--primary-100);
   }
@@ -173,7 +175,7 @@
     container-type: inline-size;
 
     width: 90%;
-    height: min(90dvw, calc(100dvh - 320px));
+    height: min(8dvw, calc(100dvh - 320px));
   }
 }
 
