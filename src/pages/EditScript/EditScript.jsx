@@ -7,13 +7,12 @@ import { PopUp } from "../../components/popUp";
 
 import "./EditScript.css";
 
-const EditScript = () => {
+const EditScript = ({userId}) => {
   const editorRef = useRef(null);
   const fileInputRef = useRef(null);
   const [fileName, setFileName] = useState("");
   const [isPopUpVisible, setPopUpVisible] = useState(false);
   const navigate = useNavigate();
-  const { userId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
 
   function handleEditorDidMount(editor, monaco) {
@@ -60,9 +59,11 @@ const EditScript = () => {
         }
       );
       if (response.ok) {
+        alert("ファイルがアップロードされました")
         console.log("File uploaded successfully");
-        navigate(`/initial/${userId}`);
+        // navigate(`/initial/${userId}`);
       } else {
+        alert("ファイルをアップロードできませんでした")
         console.error("File upload failed");
       }
     } catch (error) {
@@ -105,7 +106,7 @@ const EditScript = () => {
         <MdFileUpload size={25} color="white" />
       </span>
       {isPopUpVisible && (
-        <PopUp>
+        <PopUp onClose={togglePopUp} allowClose={true}>
           <p>保存するスロットを選択して下さい</p>
           <div className="select_save_slot">
             <button

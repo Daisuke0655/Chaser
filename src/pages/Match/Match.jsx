@@ -35,20 +35,25 @@ const Match = () => {
   const [scores, setScores] = useState([]);
   const [speadM,setSpeadM]=useState(1)
   const { jsonData } = useParams();
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const log = JSON.parse(jsonData);
-        console.log(log.CoolName)
-        console.log(log.HotName)
+        console.log(log)
         setMatchLog(log);
       } catch (error) {
         console.error("JSONパース中にエラー発生:", error);
       }
     };
     if (jsonData) {
-      fetchData();
+      const log = JSON.parse(jsonData);
+      if(log.player1_error === "" && log.player2_error === ""){
+        fetchData();
+      }
+      else{
+        alert("error")
+      }
     }
   }, [jsonData]);
 
@@ -128,16 +133,14 @@ const Match = () => {
         newFields.push(structuredClone(currentField));
         newScores.push(structuredClone(score));
       });
-      console.log(structuredClone(newFields));
       setFields(structuredClone(newFields));
-      console.log(structuredClone(newScores));
       setScores(structuredClone(newScores));
     }
   }, [matchLog]);
 
   useEffect(() => {
     if (Auto!==false) {
-        intervalRef.current = setInterval(()=>{if (turnNum < fields.length - 1){setTurnNum(turnNum + 1);console.log("auto turn")};}, autoSpeed);
+        intervalRef.current = setInterval(()=>{if (turnNum < fields.length - 1){setTurnNum(turnNum + 1);};}, autoSpeed);
     }
     return () => clearInterval(intervalRef.current);
   }, [turnNum,Auto]);
@@ -172,10 +175,19 @@ const Match = () => {
       return <div className="result lose">Draw!</div>;
     }
   };
-  const handleClosePopUp = ()=>{
-    setPopUpVisible(!isPopUpVisible)
-    console.log('here')
-  } 
+
+  const rateComponent = ({ turn, player }) => {
+    if(turn === 0){
+      return <div className="result">0%</div>
+    }
+    let scoreSum = scores[turn]["HOT"] + scores[turn]["COOL"]
+    scoreSum = scoreSum === 0 ? 1 : scoreSum;
+    const rate = ((scores[turn][player] / scoreSum) * 100).toFixed()
+    if(turn === matchLog.Turn){
+      return resultComponent({ winner: matchLog.winner, player: player})
+    }
+    return <div className="result">{rate}%</div>
+  };
 
   const logComponent = (log, player, showRealtimeLog) => {
     let initial = 0;
@@ -311,7 +323,7 @@ const Match = () => {
     
     <div className="match">
       <div className="player_container C">
-        {resultComponent({ winner: matchLog.winner, player: "COOL" })}
+        {rateComponent({ turn: turnNum, player: "COOL" })}
 
         <div className="player">
           <div className="player_name">{matchLog.CoolName}</div>
@@ -341,7 +353,7 @@ const Match = () => {
         </div>
       </div>
       <div className="player_container H">
-        {resultComponent({ winner: matchLog.winner, player: "HOT" })}
+        {rateComponent({ turn: turnNum, player: "HOT" })}
         <div className="player">
           <div className="player_name">{matchLog.HotName}</div>
           <div className="player_name">

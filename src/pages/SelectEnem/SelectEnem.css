@@ -11,7 +11,7 @@
 
   .player_settings {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -31,7 +31,7 @@
 
   .player_settings_item.H {
     display: flex;
-    width: 100%;
+    width: 75%;
     flex-direction: column;
     justify-content: center;
     border-radius: 1rem;
@@ -44,7 +44,7 @@
 
   .player_settings_item.C {
     display: flex;
-    width: 100%;
+    width: 75%;
     flex-direction: column;
     justify-content: center;
     border-radius: 1rem;
@@ -126,7 +126,7 @@
       align-items: baseline;
       margin: auto;
       gap: 1rem;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
     }
     @media screen and (max-width: 450px) {
       .label {
@@ -136,12 +136,12 @@
         align-items: center;
         margin: auto;
         gap: 1rem;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
       }
     }
 
     .num {
-      font-size: 3rem;
+      font-size: 2rem;
     }
 
     &.H.selected {
