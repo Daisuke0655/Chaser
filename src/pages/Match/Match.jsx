@@ -158,10 +158,13 @@ const Match = () => {
   }
 
   const scoreComponent = ({ turn, player }) => {
+    if(turn === matchLog.Turn){
+      return resultComponent({ winner: matchLog.winner, player: player})
+    }
     if(scores.length <= turn) {
-      return <div className="player_score">-1</div>;
+      return <div className="result">-1</div>;
     } else {
-      return <div className="player_score">{scores[turn][player]}</div>
+      return <div className="result">{scores[turn][player]}</div>
     }
   };
 
@@ -319,13 +322,6 @@ const Match = () => {
       disabled: turnNum >= fields.length - 1,
       description: "次のターンに進みます",
     },
-    stopAutoPlay: {
-      text: "停止",
-      icon: <RxPause />,
-      onClick: () => {setAuto(false)},
-      disabled: false,
-      description: "自動再生を停止します",
-    },
     startAutoPlay: {
       text: "再生",
       icon: !Auto ? <RxPlay /> : <RxPause />,
@@ -348,14 +344,10 @@ const Match = () => {
     
     <div className="match">
       <div className="player_container C">
-        {rateComponent({ turn: turnNum, player: "COOL" })}
-
         <div className="player">
           <div className="player_name">{matchLog.CoolName}</div>
-          <div className="player_name">
-          </div>
-          {scoreComponent({ turn: turnNum, player: "COOL" })}
         </div>
+        {scoreComponent({ turn: turnNum, player: "COOL" })}
         {logComponent(matchLog.log, "COOL")}
         {errorComponent({player: "COOL"})}
       </div>
@@ -380,13 +372,10 @@ const Match = () => {
         </div>
       </div>
       <div className="player_container H">
-        {rateComponent({ turn: turnNum, player: "HOT" })}
         <div className="player">
           <div className="player_name">{matchLog.HotName}</div>
-          <div className="player_name">
-          </div>
-          {scoreComponent({ turn: turnNum, player: "HOT"})}
         </div>
+        {scoreComponent({ turn: turnNum, player: "HOT"})}
         {logComponent(matchLog.log, "HOT")}
         {errorComponent({player: "HOT"})}
       </div>
