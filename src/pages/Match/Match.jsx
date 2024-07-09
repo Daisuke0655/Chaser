@@ -4,14 +4,13 @@ import {
   RxStopwatch,
   RxPause,
   RxPlay,
-  RxHamburgerMenu,
+  RxHome,
 } from "react-icons/rx";
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import "./Match.css";
 import FieldDrawByJsx from "../../components/fieldDrawByJsx";
-import { PopUp } from "../../components/popUp";
-import { PiDropSimple } from "react-icons/pi";
+
 const Match = () => {
   const height = 17;
   const width = 15;
@@ -36,6 +35,7 @@ const Match = () => {
   const [scores, setScores] = useState([]);
   const [speadM,setSpeadM]=useState(1)
   const { jsonData } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -295,6 +295,13 @@ const Match = () => {
 
   //TODO:必要に応じて追加
   const matchControls = {
+    backHomePage: {
+      text: "ホームに戻る",
+      icon: <RxHome />,
+      onClick: ()=>{navigate(-1)},
+      disabled: false,
+      description: "ホームページに戻ります",
+    },
     previousTurn: {
       text: "前ターン",
       icon: <RxArrowLeft />,
@@ -367,6 +374,7 @@ const Match = () => {
           />
         </div>
         <div className="match_controls">
+          {matchControlButton(matchControls.backHomePage)}
           {matchControlButton(matchControls.previousTurn)}
           {matchControlButton(matchControls.startAutoPlay)}
           {matchControlButton(matchControls.openOptions)}
