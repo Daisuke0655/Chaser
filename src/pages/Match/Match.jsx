@@ -10,6 +10,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate} from "react-router-dom";
 import "./Match.css";
 import FieldDrawByJsx from "../../components/fieldDrawByJsx";
+import useSound from 'use-sound';
+import Sound from '../../assets/getItem.mp3';
 
 const Match = () => {
   const height = 17;
@@ -36,6 +38,7 @@ const Match = () => {
   const [speadM,setSpeadM]=useState(1)
   const { jsonData } = useParams();
   const navigate = useNavigate();
+  const [play,{stop,pause}] = useSound(Sound)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -164,6 +167,11 @@ const Match = () => {
     if(scores.length <= turn) {
       return <div className="result">-1</div>;
     } else {
+      if(2 < turn ){
+        if(scores[turn-1][player] !== scores[turn][player]){
+          play()
+        }
+      }
       return <div className="result">{scores[turn][player]}</div>
     }
   };
@@ -234,14 +242,14 @@ const Match = () => {
           className += " current";
         }
         return (
-          <>
+          <React.Fragment key={i}>
             <div key={i} onClick={() => handleClick(i)} className={className}>
               <p>{i + 1}</p>
               <p>{actToText(act[0])}</p>
               <p>{dirToText(act[1])}</p>
             </div>
             {turnNum - 1 === i && <div className="log_item_bar" />}
-          </>
+          </React.Fragment>
         );
       }
       return null;
@@ -348,7 +356,7 @@ const Match = () => {
     
     <div className="match">
       <div className="player_container C">
-        <div className="player">
+        <div className="player" >
           <div className="player_name">{matchLog.CoolName}</div>
         </div>
         {scoreComponent({ turn: turnNum, player: "COOL" })}
