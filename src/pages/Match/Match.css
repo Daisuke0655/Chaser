@@ -109,6 +109,38 @@
         width: 100%;
       }
     }
+
+    .error{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+
+      width: 100%;
+      height: auto;
+
+      position: relative; 
+      bottom: 1rem;
+      right: 0rem;
+      background-color: var(--warn-700);
+      color: var(--light-text-color);
+      padding: 1rem;
+      border-radius: 0.5rem;
+
+      .error_close_button{
+        position: absolute; /* fixedからabsoluteに変更 */
+        top: -5%; /* 調整が必要な場合にここを変更 */
+        right: -5%; /* 調整が必要な場合にここを変更 */
+        padding: 0.5rem;
+        cursor: pointer;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+  
+        background-color: var(--neutral-200);
+        border: none;
+      }
+    }
   }
   .main_container {
     display: flex;

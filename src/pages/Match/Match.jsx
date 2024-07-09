@@ -30,7 +30,8 @@ const Match = () => {
   const [fields, setFields] = useState([]);
   const [Auto,setAuto]=useState(false);
   const intervalRef = useRef(null);
-  const [isPopUpVisible,setPopUpVisible] = useState(false);
+  const [isPlayer1Error,setPlayer1Error] = useState(false);
+  const [isPlayer2Error,setPlayer2Error] = useState(false);
   const [autoSpeed,setAutoSpeed]=useState(1000)
   const [scores, setScores] = useState([]);
   const [speadM,setSpeadM]=useState(1)
@@ -41,19 +42,18 @@ const Match = () => {
       try {
         const log = JSON.parse(jsonData);
         console.log(log)
+        if(log.player1_error !== ""){
+          setPlayer1Error(true)
+        }else if(log.player2_error !== ""){
+          setPlayer2Error(true)
+        }
         setMatchLog(log);
       } catch (error) {
         console.error("JSONパース中にエラー発生:", error);
       }
     };
     if (jsonData) {
-      const log = JSON.parse(jsonData);
-      if(log.player1_error === "" && log.player2_error === ""){
-        fetchData();
-      }
-      else{
-        alert("error")
-      }
+      fetchData();
     }
   }, [jsonData]);
 
@@ -246,6 +246,28 @@ const Match = () => {
     return <div className="log">{list}</div>;
   };
 
+
+  const ErrorWidget = ({setPlayerError,error})=>{
+    return (
+        <div className="error">
+          エラー発生<br/>
+          {error}
+          <button className="error_close_button" onClick={()=>setPlayerError(false)}>X</button>
+        </div>
+    )
+  }
+  const errorComponent = ({player}) =>{
+    if (player === "COOL" && isPlayer1Error) {
+      return <ErrorWidget setPlayerError={setPlayer1Error} error={matchLog.player1_error} />;
+    }
+  
+    if (player === "HOT" && isPlayer2Error) {
+      return <ErrorWidget setPlayerError={setPlayer2Error} error={matchLog.player2_error} />;
+    }
+    return null
+
+  }
+
   const matchControlButton = ({ text, icon, onClick, disabled }) => {
     return (
       <button
@@ -332,6 +354,7 @@ const Match = () => {
           {scoreComponent({ turn: turnNum, player: "COOL" })}
         </div>
         {logComponent(matchLog.log, "COOL")}
+        {errorComponent({player: "COOL"})}
       </div>
       <div className="main_container">
         <div className="field_container">
@@ -361,6 +384,7 @@ const Match = () => {
           {scoreComponent({ turn: turnNum, player: "HOT"})}
         </div>
         {logComponent(matchLog.log, "HOT")}
+        {errorComponent({player: "HOT"})}
       </div>
     </div>
     
