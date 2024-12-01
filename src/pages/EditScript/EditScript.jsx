@@ -88,7 +88,7 @@ const EditScript = ({userId}) => {
       <Editor
         height="90vh"
         defaultLanguage="python"
-        defaultValue="# some commnet"
+        defaultValue="# ここにプログラムを書くことができます！"
         onMount={handleEditorDidMount}
       />
       <input

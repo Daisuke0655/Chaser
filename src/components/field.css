@@ -10,7 +10,8 @@
 }
 
 .scanLight {
-  animation: _scanLight 0.5s infinite;
+  opacity: 0.8;
+  /* animation: _scanLight 0.5s infinite; */
 }
 
 @keyframes _scanLight {
@@ -141,13 +142,13 @@
 } */
 
 .field_lighted_cell_cool {
-  border: 1px solid var(--cool-500);
-  opacity: 0.1;
+  border: 2px solid var(--cool-500);
+  opacity: 0.8;
 }
 
 .field_lighted_cell_hot {
-  border: 1px solid var(--hot-500);
-  opacity: 0.1;
+  border: 2px solid var(--hot-500);
+  opacity: 0.8;
 }
 
 @container field-wrapper (width > 0) {

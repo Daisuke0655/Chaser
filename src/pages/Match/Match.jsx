@@ -64,8 +64,8 @@ const Match = () => {
     if (matchLog) {
       const newFields = [];
       const newScores = [];
-      let coolPos = { x: 0, y: 0 },
-        hotPos = { x: 0, y: 0 };
+      let coolPos = { x: -1, y: -1 };
+      let hotPos = { x: -1, y: -1 };
       let score = { COOL: 0, HOT: 0 };
 
       for (let i = 0; i < height; i++) {
@@ -106,7 +106,7 @@ const Match = () => {
           px = hotPos.x + dir[act[1]].x;
           py = hotPos.y + dir[act[1]].y;
         }
-        if (px < 0 || px >= height || py < 0 || py >= width) {
+        if (act[0] === "w" && (px < 0 || px >= height || py < 0 || py >= width)) {
           console.error("Position out of bounds:", { px, py });
           return; // 無効な位置の場合はスキップ
         }
@@ -372,6 +372,7 @@ const Match = () => {
             height={height}
             width={width}
             operate={matchLog.log[turnNum]}
+            prevOperate={turnNum>0?matchLog.log[turnNum - 1]: undefined}
           />
         </div>
         <div className="match_controls">
@@ -381,7 +382,7 @@ const Match = () => {
           {matchControlButton(matchControls.openOptions)}
           {matchControlButton(matchControls.nextTurn)}
           {/* TODO:必要に応じて追加 */}
-          <div>{turnNum + 1}ターン目</div>
+          <div>{turnNum < matchLog.log.length ? `${turnNum + 1}ターン目`: 'ゲーム終了'}</div>
         </div>
       </div>
       <div className="player_container H">
