@@ -64,6 +64,8 @@ const returnLightMass = (props) => {
  * @param {number} height - fieldの高さ
  * @param {function} onClick - クリック時の処理 ({x: x, y: y}) => {}
  * @param {string} operate - そのターンでの命令 (2文字から構成 例: wu -> walk up, ll -> look left)
+ * @param {string} prevOperate - 1つ前のターンでの命令 (2文字から構成 例: wu -> walk up, ll -> look left) 1ターン目の場合はundefined
+ * @param {string} secondPrevOperate - 2つ前のターンでの命令 (2文字から構成 例: wu -> walk up, ll -> look left) 2ターン目の場合はundefined
  * @returns {JSX.Element}
  *
  */
@@ -92,12 +94,12 @@ const FieldDrawByJsx = (props) => {
       } else {
         className = "field_cell_empty";
       }
-      if (props.turnNum !== 0 && (cell !== "C" || cell !== "H")) {
+      if (props.turnNum > 1 && (cell !== "C" || cell !== "H")) {
         // if not H or C, add arrow class
         // display arrow to the direction of the next H or C cell
         // moved_up, moved_down, moved_left, moved_right
 
-        const prevCell = props.fields[props.turnNum - 1][i][j];
+        const prevCell = props.fields[props.turnNum - 2][i][j];
 
         if (prevCell === "H") {
           if (i > 0 && props.fields[props.turnNum][i - 1][j] === "H") {
@@ -108,6 +110,9 @@ const FieldDrawByJsx = (props) => {
             className += " moved_left";
           } else if (j < 14 && props.fields[props.turnNum][i][j + 1] === "H") {
             className += " moved_right";
+          } else if (props.secondPrevOperate !== undefined && (props.turnNum % 2 === 0 && props.secondPrevOperate[0] === "w" || props.turnNum % 2 === 1 && props.prevOperate[0] === "w")) {
+            // 範囲外に出た時のみ点滅するように制限
+            className = "field_cell_hot dead_hot"
           }
         } else if (prevCell === "C") {
           if (i > 0 && props.fields[props.turnNum][i - 1][j] === "C") {
@@ -118,6 +123,8 @@ const FieldDrawByJsx = (props) => {
             className += " moved_left";
           } else if (j < 14 && props.fields[props.turnNum][i][j + 1] === "C") {
             className += " moved_right";
+          } else if (props.secondPrevOperate !== undefined && (props.turnNum % 2 === 0 && props.secondPrevOperate[0] === "w" || props.turnNum % 2 === 1 && props.prevOperate[0] === "w")) {
+            className = "field_cell_cool dead_cool"
           }
         }
       }
@@ -130,7 +137,7 @@ const FieldDrawByJsx = (props) => {
       }
 
       let svg = null;
-      if (cell === "H") {
+      if (cell === "H"||className.includes("dead_hot") ) {
         svg = (
           <svg
             viewBox="0 0 64 64"
@@ -147,7 +154,7 @@ const FieldDrawByJsx = (props) => {
             />
           </svg>
         );
-      } else if (cell === "C") {
+      } else if (cell === "C"||className.includes("dead_cool")) {
         svg = (
           <svg
             viewBox="0 0 64 64"

@@ -10,8 +10,7 @@
 }
 
 .scanLight {
-  opacity: 0.8;
-  /* animation: _scanLight 0.5s infinite; */
+  animation: _scanLight 0.5s infinite;
 }
 
 @keyframes _scanLight {
@@ -78,6 +77,14 @@
   &::after {
     content: "←";
   }
+}
+
+.dead_hot{
+  animation: _scanLight 0.5s infinite;
+}
+
+.dead_cool{
+  animation: _scanLight 0.5s infinite;
 }
 
 /* .field_cell:hover {
