@@ -111,7 +111,7 @@ const Match = () => {
           return; // 無効な位置の場合はスキップ
         }
         if (act[0] === "p") {
-          currentField[px][py] = "2";
+          if (0<=px && px<height && 0<=py && py<width) currentField[px][py] = "2";
         } else if (act[0] === "w") {
           if (turn % 2) {
             if (currentField[px][py] === "3") {
