@@ -166,6 +166,25 @@ const EditMap = ({ onClose, onSave }) => {
     }
   };
 
+  const handleImportMapFromFile = (ev) => {
+    const file = ev.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const content = e.target.result;
+      const newField = content
+        .split("\n")
+        .map((row) => row.split(""))
+        .filter((row) => row.length === width);
+      if (newField.length === height) {
+        setField(newField);
+      } else {
+        alert("マップのサイズが無効です。");
+      }
+    };
+    reader.readAsText(file);
+  };
+
   const handleExport = () => {
     const newContent = field.map((row) => row.join(""));
     onSave(newContent);
@@ -197,6 +216,9 @@ const EditMap = ({ onClose, onSave }) => {
           turnNum={0}
           onClick={handleFieldClickedJsxVer}
         />
+      </div>
+      <div className="importMap_fromFile" style={{ fontSize: 'smaller' }}>
+        <input type="file" id="importMap" accept=".txt" onChange={handleImportMapFromFile} style={{ fontSize: 'medium' }}/>
       </div>
       <div className="editMap_actions">
         <button id="cancel" className="secondary" onClick={handleClose}>
