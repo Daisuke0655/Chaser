@@ -72,7 +72,7 @@ function SelectEnem({userId,onSetData}) {
       h_id: nameHot,
       h_slot: slotHot,
       board: board,
-      turn: Number(turn),
+      turn: Number(turn) * 2,
     };
 
     try {

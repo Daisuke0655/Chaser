@@ -247,7 +247,7 @@ const Match = () => {
         return (
           <React.Fragment key={i}>
             <div key={i} onClick={() => handleClick(i)} className={className}>
-              <p>{i + 1}</p>
+              <p>{Math.floor(i/2 + 1)}</p>
               <p>{actToText(act[0])}</p>
               <p>{dirToText(act[1])}</p>
             </div>
