@@ -364,11 +364,23 @@ const Match = () => {
         </div>
         {scoreComponent({ turn: turnNum, player: "COOL" })}
         {logComponent(matchLog.log, "COOL")}
-        {errorComponent({player: "COOL"})}
+        {turnNum === matchLog.log.length && errorComponent({player: "COOL"})}
       </div>
       <div className="main_container">
+        <div className="match_controls">
+          {matchControlButton(matchControls.backHomePage)}
+          {matchControlButton(matchControls.previousTurn)}
+          {matchControlButton(matchControls.startAutoPlay)}
+          {matchControlButton(matchControls.openOptions)}
+          {matchControlButton(matchControls.nextTurn)}
+          {/* TODO:必要に応じて追加 */}
+          <div className="count_turn"> {
+            turnNum === matchLog.log.length 
+              ? "ゲーム終了"
+              : `${Math.floor(turnNum/2) + 1}ターン目`}
+          </div>
+        </div>
         <div className="field_container">
-            
           <FieldDrawByJsx
             fields={fields}
             turnNum={turnNum}
@@ -379,15 +391,6 @@ const Match = () => {
             secondPrevOperate={turnNum>1?matchLog.log[turnNum - 2]: undefined}
           />
         </div>
-        <div className="match_controls">
-          {matchControlButton(matchControls.backHomePage)}
-          {matchControlButton(matchControls.previousTurn)}
-          {matchControlButton(matchControls.startAutoPlay)}
-          {matchControlButton(matchControls.openOptions)}
-          {matchControlButton(matchControls.nextTurn)}
-          {/* TODO:必要に応じて追加 */}
-          <div>{Math.floor(turnNum/2) + 1}ターン目</div>
-        </div>
       </div>
       <div className="player_container H">
         <div className="player">
@@ -395,7 +398,7 @@ const Match = () => {
         </div>
         {scoreComponent({ turn: turnNum, player: "HOT"})}
         {logComponent(matchLog.log, "HOT")}
-        {errorComponent({player: "HOT"})}
+        {turnNum === matchLog.log.length && errorComponent({player: "HOT"})}
       </div>
     </div>
     
