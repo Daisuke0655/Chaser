@@ -157,13 +157,14 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 80%;
+    width: 85%;
+    height: 8%;
     gap: 1rem;
     border-radius: 1rem;
     background-color: var(--neutral-100);
     box-shadow: 0.25rem 0.25rem 1rem rgba(0, 0, 0, 0.1);
     /* こちらの環境だと設定が最適だが、この設定を使用して ウィジェットが崩れる場合は下の２つの設定を適宜削除*/
-    margin-top: -2rem; 
+    margin-top: -7rem; 
     z-index: 1000; 
 
     button.control {
@@ -185,7 +186,17 @@
       }
     }
   }
+
+  .count_turn {
+    font-size: 2.8rem;
+    font-family: "メイリオ", sans-serif;
+  }
+
+  .field_container {
+    margin-top: -5.5rem;
+  }
 }
+
 
 @media screen and (max-width: 1024px) {
   .match {

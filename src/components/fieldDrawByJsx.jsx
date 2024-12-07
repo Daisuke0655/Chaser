@@ -1,4 +1,6 @@
 import "./field.css";
+import React from "react";
+import { ReactComponent as Item } from "../assets/Item.svg";
 
 /**
  * returnLightMass
@@ -172,19 +174,22 @@ const FieldDrawByJsx = (props) => {
           </svg>
         );
       } else if (cell === "3") {
-        svg = (
-          <svg
-            viewBox="0 0 60 59"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M58 28C43.3156 35.7735 36.6719 41.3714 30 57C23.1944 41.3112 16.7749 35.4709 2 28C16.3436 20.7029 22.1979 14.2866 30 1C38.2197 14.6041 44.0914 21.1231 58 28Z"
-              fill="#FFF848"
-              stroke="black"
-            />
-          </svg>
-        );
+        // svg = (
+        //   <svg
+        //     viewBox="0 0 60 59"
+        //     fill="none"
+        //     xmlns="http://www.w3.org/2000/svg"
+        //   >
+        //     <path
+        //       d="M58 28C43.3156 35.7735 36.6719 41.3714 30 57C23.1944 41.3112 16.7749 35.4709 2 28C16.3436 20.7029 22.1979 14.2866 30 1C38.2197 14.6041 44.0914 21.1231 58 28Z"
+        //       fill="#FFF848"
+        //       stroke="black"
+        //     />
+        //   </svg>
+        // );
+
+        // svgのファイルを指定 windows版のアイテムを利用
+        svg = <Item style={{width: '90%', height: '90%'}} viewBox="0 0 100 100" fill="none"/>;
       } else if (cell === "2") {
         // svg = (
         //   <svg
