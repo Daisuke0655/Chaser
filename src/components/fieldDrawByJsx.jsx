@@ -110,7 +110,7 @@ const FieldDrawByJsx = (props) => {
             className += " moved_left";
           } else if (j < 14 && props.fields[props.turnNum][i][j + 1] === "H") {
             className += " moved_right";
-          } else if (props.secondPrevOperate !== undefined && (props.turnNum % 2 === 0 && props.secondPrevOperate[0] === "w" || props.turnNum % 2 === 1 && props.prevOperate[0] === "w")) {
+          } else if (props.secondPrevOperate !== undefined && (props.turnNum % 2 === 1 && props.secondPrevOperate[0] === "w" || props.turnNum % 2 === 0 && props.prevOperate[0] === "w")) {
             // 範囲外に出た時のみ点滅するように制限
             className = "field_cell_hot dead_hot"
           }

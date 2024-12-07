@@ -386,7 +386,7 @@ const Match = () => {
           {matchControlButton(matchControls.openOptions)}
           {matchControlButton(matchControls.nextTurn)}
           {/* TODO:必要に応じて追加 */}
-          <div>{turnNum + 1}ターン目</div>
+          <div>{Math.floor(turnNum/2) + 1}ターン目</div>
         </div>
       </div>
       <div className="player_container H">
