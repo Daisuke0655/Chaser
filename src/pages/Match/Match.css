@@ -60,7 +60,7 @@
       border-radius: 0.5rem;
       color: var(--light-text-color);
 
-      font-size: 1.5rem;
+      font-size: 3rem;
       font-weight: bold;
       &.lose {
         background-color: var(--neutral-100);
