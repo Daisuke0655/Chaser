@@ -205,6 +205,8 @@ const FieldDrawByJsx = (props) => {
         //     />
         //   </svg>
         // );
+
+        svg = <Item style={{width: '90%', height: '90%'}} viewBox="0 0 100 100" fill="none" opacity="0%"/>;
       }
 
       if (cell === "search") {
